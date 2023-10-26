@@ -36,9 +36,11 @@ $$
 \alpha_k = argmin_\alpha \Phi(x^k+\alpha p^k)
 $$
 è dato da:
+
 $$
-\alpha_k = \frac{{r^k}^Tp^k }{{p^k}^T A p^k }
+\alpha_k = \frac{{r^k}^Tp^k }{ {p^k}^T A p^k }
 $$
+
 inoltre, se $p^k$ è una _direzione di decrescita_, ovvero ${p^k}^T \nabla \Phi(x^k) <0$, si ha che $\alpha_k > 0$.
 
 **Dimostrazione** Risolviamo il problema di ottimizzazzione unidimensionale lungo la retta $y(\alpha)=x^k +\alpha P^k$:
