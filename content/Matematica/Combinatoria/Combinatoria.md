@@ -1,0 +1,32 @@
+# Combinatoria
+## Teoria dei grafi
+1. [x] [[Grafo semplice]]
+2. [[Grafo di Kneser]]
+3.  [x] [[Graph Isomorphism]]
+4.  [x] [[Grafo complementare]]
+5.  [ ] [[Distanza e connessione]]
+6. [[Cut,Bridges, Block decomposition of a Graph]]
+7.  [x] [[Handshake Lemma]]
+8.  [x] [[Circuito Euleriano]]
+9.  [x] [[Ciclo hamiltoniano]]
+10.  [x] [[Alberi]]
+11. [[Alberi di copertura]]
+12.  [x] [[Formula di Caley]]
+13.  [ ] [[Line graph]]
+14.  [x] [[Graph coloring]]
+15.  [ ] [[Teorema di Brooks]]
+16.  [ ] [[Grafi bipartiti]]
+17.  [ ] [[Matchings]] 
+18.  [x] [[Teorema di Erdos]]
+19.  [ ] [[Capacità di un grafo]] 
+
+## Combinatoria
+1.  [x] [[Teorema di Bondy]]
+2.  [x] [[Coefficiente binomiale]]
+3.  [x] [[Coefficienti multinomiali]]
+4.  [x] [[Teorema di Hall]] 
+5.  [x] [[Combinatoria estremale]] 
+6.  [x] [[Teoria di Ramsey]]  
+7. [ ] [[Teorema di Konig-Egervary]]
+8. [ ] [[Teorema di Birkoff-von Neumann]] 
+
