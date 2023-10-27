@@ -1,6 +1,12 @@
 ---
-title: Welcome to Quartz
+title: Welcome!
 ---
+![image info]([./Gendo.png])
+# Hello my name is Lorenzo Gregoris!
+ 
+ this site is a **WIP**
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+#### cool stuff about me
+
+
+
