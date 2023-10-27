@@ -1,12 +1,13 @@
 ---
-title: Welcome!
+title: Lorenzo Gregoris
 ---
-![image info](./Gendo.png)
-# Hello my name is Lorenzo Gregoris!
  
- this site is a **WIP**
+![[Pasted image 20231027122535.png]]
 
-#### cool stuff about me
+**WIP**
 
+### About me
+Cool stuff about me
 
-
+### Projects
+Cool stuff i made

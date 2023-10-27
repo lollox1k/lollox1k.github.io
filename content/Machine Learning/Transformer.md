@@ -1,5 +1,5 @@
 ## The Transformer Architecture
-The original Transformer is based on the [[The Encoder-Decoder framwork|encoder-decoder]] architecture.
+The original Transformer is based on the [[The Encoder-Decoder framework|encoder-decoder]] architecture.
 ![[Pasted image 20231002130914.png]]
 - The input text is [[Tokenization|tokenized]] and converted to token embeddings. Since the attention mechanism is not aware of the relative positions of the tokens, we need a way to *inject some information about token positions* into the input to model the sequential nature of text. The token embeddings are thus combined with positional embeddings that contain positional information for each token.
 - The encoder is composed of a stack of encoder layers or “blocks,” which is analogous to stacking convolutional layers in computer vision. The same is true of the decoder, which has its own stack of decoder layers.
