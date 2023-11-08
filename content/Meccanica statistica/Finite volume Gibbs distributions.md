@@ -185,31 +185,3 @@ La convessità segue dalla quasi convessità e della continuità della funzione 
 
 
 >> NON VA QUA
-4. **estenzione a sequenze di volumi nel senso di Van Hove** PER INTERAZIONI NN
-
-![[Pasted image 20220909170512.png]]
-
-Consideriamo la successione di cubi $D_n = \{0,\dots,2^n\}^d$.  Sappiamo che per questa successione il limite esiste.
-
-Scomponiamo il generico volume $\Lambda_n$ in traslati $D_k$ per un certo $k$, in maniera tale che $\Lambda_n \subset [\Lambda_n] := \cup D_k$. Facciamo vedere che nel limite la differenza della funzione di partizione è trascuarbile perchè la successione $\Lambda_n$ converge nel senso di Van Hove.
-
-Stimiamo:
-$$
-\vert f_{\Lambda_n}  - f\vert \leq \vert f_{\Lambda_n} - f_{[\Lambda_n]}\vert + \vert f_{[\Lambda_n]}-f_{D_k}\vert + \vert f_{D_k}-f\vert
-$$
-Fissato $\epsilon > 0$, l'ultimo addendo è minore di $\epsilon$ per la convergenza della successione di cubi $\forall k \geq k_0$.
-
-Calcoliamo $\mathcal{H}_{[\Lambda_n]}$:
-$$
- \mathcal{H}_{[\Lambda_n]} = \sum_j  \mathcal{H}_{D_k^{(j)}} + W_n
-$$
-dove il termine $W_n$ è l'energia dovuta all'interazione tra le regioni $D_k^{(j)}$. Troviamo un upperbound per questa quantità sfruttando la sommabilità del potenziale d'interazione:
-
-Per ognuna delle $\rho |D_k|$ particelle, al massimo l'interazione vale $\kappa$.
-Quindi in totale:
-$$
-|W_n |\leq \rho|D_k| \kappa \frac{|[\Lambda_n]|}{|D_k|} = \rho\kappa |[\Lambda_n]|
-$$
-$$
-f_{[\Lambda_n]} \leq \frac{-1}{\beta |\Lambda_n|}\log \sum e^{-\beta \frac{|[\Lambda_n]}{|D_k|}\mathcal{H}_{D_k} -\beta\rho\kappa|[\Lambda_n]|} = f_{D_k}^{\frac{|\Lambda_n|}{|D_k|}} +\rho\kappa|\Lambda_n|
-$$

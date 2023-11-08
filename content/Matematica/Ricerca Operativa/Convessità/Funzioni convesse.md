@@ -125,3 +125,59 @@ $$
 \langle  d \cdot H(x) d \rangle \geq 0 \qquad \forall d \in \mathbb{R} ^n
 $$
 la definizione di definita semi-positiva. $QED$
+
+
+
+### Proprietà 
+
+**Proposition** (Existence of the left-right derivatives) Let $f : I \to \mathbb{R}$ be convex. Then it's differentiable a.e.
+
+**Proof** We find two bounds for the right and left derivatives, so that they are finite.
+Let $y_1 > x$, we can write the right derivative $\partial^+ f(x)$ as
+$$
+\partial^+ f(x) = (y_1-x) \lim_{h\downarrow 0} \frac{f(x + h(y_1-x)) -f(x)}{h}  
+$$
+$$
+\leq(y_1-x) \lim_{h\downarrow 0} \frac{hf(y_1)-hf(x)}{h} 
+$$
+so that
+$$
+\partial^+ f(x) \leq \frac{f(y_1)-f(x)}{y_1-x}
+$$
+similarly, choosing $y_2 < x$ 
+$$
+ \frac{f(y_2)-f(x)}{y_2-x} \leq \partial^+ f(x)
+$$
+on can take $y_1 \downarrow x$ and $y_2 \uparrow x$, the two sequences are monotonic, so that the limit exist.
+
+The same can be proven for the left derivative. $\square$
+
+**Oss** Also it holds that $\partial^- f(x) \leq \partial^+ f(x)$ 
+
+**Proposition** (Derivative limit exchange) Suppose the sequence $(f_n)$ of convex functions on $I$ converges to a function $f$. If $f$ is differentiable at $x$:
+$$
+f'(x) = \lim_{n\to\infty} f'_n(x)
+$$
+**Proof** We use the bounds for the left-right derivatives used in the previous proof. Let $h \geq 0$
+$$
+\limsup_n \partial^+f_n \leq \limsup_n \frac{f_n(x+h)-f_n(x)}{h} = \frac{f(x+h)-f(x)}{h}
+$$
+letting $h \downarrow 0$ we find that 
+$$
+\limsup_n \partial^+f_n \leq \partial^+f(x)
+$$
+Similarly one finds for the left derivative, $h \leq 0$ 
+$$
+\liminf_n \partial^-f_n(x) \geq \liminf_n \frac{f_n(x+h)-f(x)}h = \frac{f(x+h)-f(x)}h
+$$
+and letting $h \uparrow 0$
+$$
+\partial^-f(x) \leq \liminf_n \partial^-f_n(x)
+$$
+thus 
+$$
+\partial^-f(x) \leq \liminf_n \partial^-f_n(x) \leq \limsup_n \partial^+f_n \leq \partial^+f(x)
+$$
+if $f$ is differentiable at $x$ the claim follows. $\square$
+
+

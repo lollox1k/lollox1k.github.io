@@ -42,6 +42,11 @@ $$
 $$
 Data l'Hamiltoniana, possiamo definire le distribuzioni Canonica e Gran canonica.
 
+Il potenziale associato è l'energia libera
+$$
+f_{\beta, \Lambda, N} := -\frac{1}{\beta |\Lambda|} \log Z_{\beta, \Lambda, N}
+$$
+
 ### Esistenza dell'energia libera 
 Definiamo una sequenza di volumi finiti che converge a $\mathbb{Z}^d$.
 Diciamo che $\Lambda_n \uparrow \mathbb{Z}^d$ se:
@@ -70,22 +75,21 @@ _esiste_, non dipende dalla scelta delle sequenza $\Lambda_n$ e $N_n$. Inoltre l
 #### Lemma convessità
 Siano $\Lambda_1, \Lambda_2$ due sottoinsiemi disgiunti $\Lambda_1,\Lambda_2 \Subset \mathbb{Z}^d$. Se $N_1 \leq |\Lambda_1|$ e $N_2 \leq |\Lambda_2|$ Allora 
 $$
-Z_{\Lambda_1 \cup \Lambda_2;\, \beta;\, N_1+N_2} \geq Z_{\Lambda_1;\, \beta;\, N_1} + Z_{\Lambda_2;\, \beta;\, N_2}
+Z_{\Lambda_1 \cup \Lambda_2;\, \beta;\, N_1+N_2} \geq Z_{\Lambda_1;\, \beta;\, N_1}  Z_{\Lambda_2;\, \beta;\, N_2}
 $$
 #### Proof
 $$
-\sum_{\eta} e^{\beta \sum_{(i,j) \subset \Lambda}K(i,j) }\frac{1}{N!}
+\sum_{\eta} e^{\beta \sum_{(i,j) \subset \Lambda}K(i,j) }
 $$
 dove l'insieme delle configurazioni è della forma $\eta \in \{0,1\}^{\Lambda}$ con la condizione che $N = \sum \eta_i$.
 
 E' evidente che limitandoci alle configurazioni $\eta'$ tali che hanno $N_1$ particelle in $\Lambda_1$ e $N_2$ in $\Lambda_2$. Ottengo una quantità inferiore (sto sommando su meno stati, sempre quantità positive).
-Il fattore combinatorio diventa $\frac{N!}{N_1!N_2!}$.
 
 Separiamo la somma nell'esponente:
 $$
-\sum_{\eta'}  e^{\beta \sum_{(i,j) \subset \Lambda_1}K(i,j) + \beta\sum_{(i,j) \subset \Lambda_2}K(i,j) + \sum_{i \in \Lambda_1\, j \in \Lambda_2} \beta K(i,j)}\frac{1}{N_1!N_2!}
+\sum_{\eta'}  e^{\beta \sum_{(i,j) \subset \Lambda_1}K(i,j) + \beta\sum_{(i,j) \subset \Lambda_2}K(i,j) + \sum_{i \in \Lambda_1\, j \in \Lambda_2} \beta K(i,j)}
 $$
-Essendo $K(i,j)\geq 0$ possiamo trascuare il termine di interazione tra le regioni e fattorizzare per ottenere il risultato. $\square$
+Essendo $K(i,j)\geq 0$ possiamo trascurare il termine di interazione tra le regioni e fattorizzare per ottenere il risultato. $\square$
 
 #### Lemma "continuità"
 Una sorta di continuità della funzione di partizione rispetto al numero di particelle (i.e. incrementando le particelle di uno la funzione non cambia troppo).
@@ -97,7 +101,7 @@ $$
 #### Proof
 Possiamo vedere le configurazioni con $N+1$ particelle come tutte quelle da $N$ particelle a cui poi aggiuniamo un'altra in un sito libero. 
 $$
-\frac{1}{(N+1)!} \sum_{\eta \in \{0,1\}^{\Lambda};\, N(\eta)=N+1} e^{-\beta \mathcal{H}_K(\eta)} = \frac{1}{N+1} \frac{1}{N!}\sum_{\eta \in \{0,1\}^{\Lambda};\, N(\eta)=N} \sum_{\eta' \geq \eta;\, N(\eta')=N+1}e^{-\beta \mathcal{H}_K(\eta')}
+\sum_{\eta \in \{0,1\}^{\Lambda};\, N(\eta)=N+1} e^{-\beta \mathcal{H}_K(\eta)} = \frac{1}{N+1} \sum_{\eta \in \{0,1\}^{\Lambda};\, N(\eta)=N} \sum_{\eta' \geq \eta;\, N(\eta')=N+1}e^{-\beta \mathcal{H}_K(\eta')}
 $$
 è chiaro che $\mathcal{H}(\eta') \leq \mathcal{H}(\eta)$, inoltre vale:
 $$
@@ -111,7 +115,7 @@ Con queste disuguaglianze, e condiserando che ci sono $|\Lambda| - N$ termini ne
 
 ## Proof del limite
 1. **esistenza del limite per sequenze particolari di particelle**
-Consideriamo la sequenza $N_n = \lceil\rho |\Lambda_n|\rceil$ (il ceil).
+consideriamo la sequenza $N_n = \lceil\rho |\Lambda_n|\rceil$ (il ceil).
 I casi limite $\rho = 0$ e $\rho = 1$ possono essere calcolati esplicitamente:
 $$
 f_\beta(0)=0 \qquad f_\beta(1)= -\frac{\kappa}{2}
@@ -124,7 +128,7 @@ per un qualche $c > 1$.
 Sia $\rho \in (0,1)$. Per tutti i $\Lambda_1,\Lambda_2$ disgiunti e con $\Lambda_1 \cup \Lambda_2 = \Lambda$ abbiamo che $\lceil\rho |\Lambda|\rceil \geq \rho |\Lambda_1| + \rho|\Lambda_2| \geq\lceil\rho |\Lambda_1|\rceil + \lceil\rho | \Lambda_2|\rceil -2$, ovvero $N \geq N_1 + N_2 -2$.
 Usando due volte verso il basso la precedente disequazione otteniamo:
 $$
-Z_{\Lambda;\,  \lceil \rho |\Lambda| \rceil } \geq c^{-2} Z_{\Lambda;\,  \lceil \rho |\Lambda| \rceil -2}
+Z_{\Lambda;\,  \lceil \rho |\Lambda| \rceil } \geq c^{-2} Z_{\Lambda;\,  \lceil \rho |\Lambda_1|+ \rho|\Lambda_2| \rceil -2}
 $$
 adesso consideriamo due volumi disgiunti $\Lambda_1, \Lambda_2$ con un relativo numero di particelle $N_1 = \lceil\rho|\Lambda_1|\rceil$  e $N_2 = \lceil\rho|\Lambda_2|\rceil$.  Vale quindi:
 $$
@@ -138,11 +142,15 @@ Inoltre, come conseguenza dell'invarianza per traslazione del potenziale di inte
 $$
 \lim_{n\to\infty} \frac{a(\Lambda_n)}{|\Lambda_n|} = \inf_n \frac{a(\Lambda_n)}{|\Lambda_n|} 
 $$
+Siccome vale il lower bound 
+$$
+f_{\beta, \Lambda_n, N} \geq -\frac{\log 2}{\beta}-\frac \kappa 2
+$$
 quindi esiste l'energia libera, almeno per successioni di $N_n = \lceil\rho |\Lambda_n|\rceil$, e con $\Lambda_n$ parallelepipedi.
 
 Una conseguenza dell'esistenza, è anche il seguente upper-bound, che segue dal fatto che il limite è pari all'inf:
 $$
-Z_{\Lambda,\lceil \rho |\Lambda| \rceil} \leq c^2 e^{-\beta f(\rho)|\Lambda|}
+Z_{\Lambda,\lceil \rho |\Lambda| \rceil} \leq c^2 e^{-\beta f_\beta(\rho)|\Lambda|}
 $$
 2. **esistenza del limite per sequenze generiche di particelle**
 Assumiamo ora di avere una generica sequenza $N_n$ tale che $\frac{N_n}{|\Lambda_n|} \to \rho$.
@@ -154,14 +162,32 @@ siccome $N_n - \lceil \rho |\Lambda_n| \rceil \to 0$, il limite coincide con que
 3. **convergenza uniforme sui compatti di $(0,1)$**
 Per dimostrare la convergenza uniforme sui compatti di $(0,1)$, sia  $I = [a,b] \subset (0,1)$ usiamo la disuguaglianza di continuità con densità in $I$
 $$
-\left\vert f_{\Lambda\,\beta} \left(\frac{N+1}{|\Lambda|}\right) - f_{\Lambda\,\beta} \left(\frac{N}{|\Lambda|}\right) \right\vert \leq \frac{1}{|\Lambda|} \sup_{\rho \in I}\left\{ \kappa + \beta \log\left(\frac{1-\rho}{\rho}\right)\right\}
+\left\vert f_{\Lambda\,\beta, \,N+1} - f_{\Lambda\,\beta, \,N}  \right\vert \leq \frac{1}{|\Lambda|} \sup_{\rho \in I}\left\{ \kappa + \beta \log\left(\frac{1-\rho}{\rho}\right)\right\}
 $$
-quindi possiamo effettuare un bound uniforme, che con la convergenza puntuale implica la convergenza uniforme, quindi continuità della funzione limite (vedi [[Teoremi sulla convergenza uniforme#Lipshitz continuità]]) .  $\square$
+infatti
+$$
+\left\vert f_{\Lambda\,\beta, \,N+1} - f_{\Lambda\,\beta, \,N}  \right\vert \leq -\frac{k}{|\Lambda|} -\frac{1}{\beta |\Lambda|}\sup_N\log \left(\frac{|\Lambda|-N}{N+1}\right) 
+$$
+$$
+\leq-\frac{k}{|\Lambda|} -\frac{1}{\beta |\Lambda|}\sup_\rho\log \left(\frac{1-\rho}{\rho}\right) =: C(\beta, I)
+$$
 
-La convessità segue dalla quasi convessità e della continuità della funzione limite.  $\square$
+quindi possiamo effettuare un bound uniforme per tutte le densità $\rho \in I$, c dunque la convergenza è uniforme, quindi continuità della funzione limite (vedi [[Teoremi sulla convergenza uniforme#Lipshitz continuità]]) in $(0,1)$, usando i lower ed upper bound si mostra che 
+$$
+\lim_{\rho\downarrow 0}f_\beta(\rho) = 0, \qquad \lim_{\rho\uparrow 1}f_\beta(\rho) = -\frac \kappa 2
+$$
+dunque è continua in tutto $[0,1]$.
 
+La convessità segue dalla quasi convessità e della continuità della funzione limite, infatti considerando sequenze di volumi $D_k = \{0,1,\dots, 2^k\}^d$ , $\rho = (\rho_1+\rho_2)/2$
+$$
+Z_{D_{k+1}, \lceil \rho|D_{k+1}|\rceil} \geq c^{-2}\left(Z_{D_k, \lceil \rho_1|D_k|\rceil}Z_{D_k, \lceil \rho_2|D_k|\rceil}\right)^{2^{d-1}}
+$$
+thus in the limit
+$$
+f_\beta(\rho) \leq \frac{f_\beta(\rho_1) + f_\beta(\rho_2)}2 \qquad \square
+$$
 ## Ensemble Gran Canonico
-Ora consentiamo al numero di paticelle $N$ di variare, la distribuzione di probabilità diventa:
+Ora consentiamo al numero di particelle $N$ di variare, la distribuzione di probabilità diventa:
 $$
 \nu_{\Lambda,\beta,\mu}(\eta) := \frac{\exp{-\beta[\mathcal{H}(\eta) - \mu N(\eta)]}}{\Theta_{\Lambda,\beta,\mu}}
 $$
@@ -179,7 +205,7 @@ p_{\Lambda,\beta}(\mu) := \frac{1}{\beta |\Lambda|} \log \Theta_{\Lambda,\beta,\
 $$
 Dalla definizione segue che:
 $$
-\frac{\partial p}{\partial \mu} = \frac{\langle N \rangle}{|\Lambda|}
+\frac{\partial p_{\Lambda,\beta}}{\partial \mu} = \frac{\langle N \rangle}{|\Lambda|}
 $$
 ovvero la densità media. Quindi il potenziale chimico ci permette di controllare il numero di particelle: valori negativi corrispondono ad una fase diluita, positivi grandi ad una fase liquida.
 
@@ -219,22 +245,49 @@ $$
 ### Dim 
 Siccome i termini della somma che definiscono il gran potenziale sono non negativi:
 $$
-\max_N \{e^{\beta\mu N}Z_{\Lambda_n,\beta,N}  \} \leq \sum_{N=0}^{|\Lambda_n|} e^{\beta\mu N}Z_{\Lambda_n,\beta,N} \leq (|\Lambda_n| +1) \max_N \{e^{\beta\mu N}Z_{\Lambda_n,\beta,N}
+\max_N \{e^{\beta\mu N}Z_{\Lambda_n,\beta,N}  \} \leq \sum_{N=0}^{|\Lambda_n|} e^{\beta\mu N}Z_{\Lambda_n,\beta,N} \leq (|\Lambda_n| +1) \max_N \{e^{\beta\mu N}Z_{\Lambda_n,\beta,N}\}
 $$
 Possiamo usare l'upper bound calcolato per l'esisteza dell'energia libera:
 $$
 Z_{\Lambda,\lceil \rho |\Lambda| \rceil} \leq c^2 e^{-\beta f(\rho)|\Lambda|}
 $$
 $$
+\max_N \{e^{\beta\mu N} Z_{\beta, \Lambda_n, N}\} \leq = 
+$$
+
+$$
 Z_{\Lambda_n,\beta,N} \leq c^2 \exp\{ -\beta[f(\rho)|\Lambda_n| + \mu N] \} \leq \sup_\rho c^2 \exp\{ -\beta[f(\rho) + \mu \rho]|\Lambda_n| \}
 $$
 quindi per il $\limsup$ vale:
 $$
-\limsup_{n\to\infty} \frac{1}{\beta|\Lambda_n|} \log \Theta \leq \frac{1}{\beta|\Lambda_n|} \left(\log c^2 -\beta \sup_\rho \{ f(\rho)-\mu\rho\}|\Lambda_n|\right) 
+\limsup_{n\to\infty} \frac{1}{\beta|\Lambda_n|} \log \Theta \leq  \sup_\rho \{ \mu\rho - f(\rho)\}
 $$
 
+For the $\liminf$, we use again the fact $f_n \to f$, for any $\epsilon > 0$ we can find $N$ such that $\forall n \geq N$
+$$
+f_{\beta, \Lambda_n, N_n} - f_\beta(\rho) < \epsilon
+$$
+this implies for the partition function 
+$$
+Z_{\beta, \Lambda_n, N_n} \geq e^{-\beta|\Lambda_n| f_\beta(\rho) -\beta|\Lambda_n| \epsilon }
+$$
+this is the trick: let $\rho_n \to \rho^*$ be a sequence converging to the $\sup$. Since $\mu \rho - f_\beta(\rho$ ) is continuos the values is attained for some $\rho^*$:
+$$
+\mu\rho^*-f_\beta(\rho^*) = \sup_\rho \{\mu\rho -f_\beta(\rho)\}
+$$
+Setting $N_n = \lceil \rho^*|\Lambda_n| \rceil$ we find that
+$$
+Z_{\beta, \Lambda_n, \lceil \rho^*|\Lambda_n| \rceil} \geq e^{-\beta|\Lambda_n| f_\beta(\rho^*) -\beta|\Lambda_n| \epsilon }
+$$
+so that
+$$
+\liminf_n \frac{1}{\beta|\Lambda_n|}\log \Theta_{\beta, \Lambda_n, \mu} \geq \mu\rho^* -f_\beta(\rho^*) -\epsilon =
+$$
+thus the termodinamic limit of the pressure exists. $\square$ 
 
-# Gas di sfere dure
+**Remark** (Differentiability of the free energy) The free energy is differentiable everywhere on $(0,1)$. 
+**Proof** Suppose there exists a point where $\partial^- f(x) \neq \partial^+f(x)$, then the pressure would be affine in the interval $[\partial^- f(x), \partial^+f(x)]$ by this [[Legendre transform#From Velenik and Friedli|property of the Legendre transform]], but the pressure is strictly convex. $\square$
+# Gas di sfere due
 Poniamoci nel semplice caso $K(i,j) = 0$, ovvero manteniamo solo la parte hard-core del gas.
 In questo semplice modello i potenziali termodinamici possono essere calcoalti esplicitamente.
 
@@ -242,7 +295,7 @@ The canonical partition function becomes a _purely combinatorial quantity_, coun
 $$
 Z_{\Lambda,\beta,N} = \binom{|\Lambda|}{N} 
 $$
-l'**energia libera** a volume infinito può essere calacolata approssimando con stirling i fattoriali:
+l'**energia libera** a volume infinito può essere calcolata approssimando con stirling i fattoriali:
 $$
 f_\beta(\rho) = \frac{1}{\beta}\left( \rho \log \rho + (1-\rho)\log(1-\rho) \right)
 $$
@@ -262,7 +315,7 @@ da qui derivando posso calcolare la densità media:
 $$
 \rho(\mu) = \frac{e^{\beta\mu}}{1+e^{\beta\mu}} \implies \mu = \frac{1}{\beta}\log\frac{p}{1-p}
 $$
-Questa espressione è invertivile, quindi posso scrivere il potenziale chimico in funzione della densità per ottenere un'equazione di stato:
+Questa espressione è invertibile, quindi posso scrivere il potenziale chimico in funzione della densità per ottenere un'equazione di stato:
 
 $$
 p = \frac{1}{\beta} \log (1 + \frac{p}{1-p}) = \frac{1}{\beta} \log (\frac{1}{1-p}) =- \frac{1}{\beta} \log(1-p) 

@@ -12,8 +12,7 @@ per ogni $n$, con $C > 0$.
 
 Allora $f_n \rightrightarrows f$ su $I$.
 ### Dim
-Consideriamo un ricoprimento finito del compatto $I$. Partendo dall'unione di tutte le palle di un certo raggio $\delta$, prendiamo un sottoricoprimento finito (esiste per il [[Teorema di Heine-Borel]]). Quindi
-$I = \cup_i^M B_\delta(x_i)$. Siccome abbiamo convergenza puntuale, per ogni punto $x_i$ centri delle palle, vale:
+Consideriamo un ricoprimento finito del compatto $I$. Partendo dall'unione di tutte le palle di un certo raggio $\delta$, prendiamo un sottoricoprimento finito Quindi $I = \cup_i^M B_\delta(x_i)$. Siccome abbiamo convergenza puntuale, per ogni punto $x_i$ centri delle palle, vale:
 $$
 	\vert f_n(x_i)-f_m(x_i)\vert < \epsilon \qquad \forall n,m \geq N_i
 $$

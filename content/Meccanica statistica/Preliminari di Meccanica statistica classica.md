@@ -1,8 +1,8 @@
 # Preliminari di Meccanica statistica classica
 _Source:_ Short treatise G. Gallavotti (1999) 
-- Obbiettivo della MS classica;
-- Idee chiave di Boltzmann: discretizzazzione, ipotesi ergodica;
-- Tempo di ricorrenza, osservabilo macroscopiche;
+- Obiettivo della MS classica;
+- Idee chiave di Boltzmann: discretizzazione, ipotesi ergodica;
+- Tempo di ricorrenza, osservabili macroscopiche;
 
 ## Introduzione 
 Scopo della meccanica statistica classica: 
@@ -14,19 +14,18 @@ $$
 Si vuole passare da una descrizione microscopica, ovvero un punto nello spazio delle fasi $6N$ dimensionale, a leggi per quantità macroscopiche medie.
 
 ### Descrizione a Grana Grossa
-Per la meccanica classica posizione e momento sono numeri reali, lo stato assume _valori continui_. Per Boltzmann (molto prima della QM) tuttavia, il sistema doveva essere descritto _discretizzando lo spazio delle fasi_ in cellette di "piccola" dimensione. La giustificazione di ciò è operativa (dal sapore sperimentale): assumiamo di avere una precisione limitata nelle misurazioni, allora gli stati all'interno di una stessa celletta sono indistiguinili: _è una risoluzione massima_. La descrizione del continuo si recupera nel limite di precisione infinita.
+Per la meccanica classica posizione e momento sono numeri reali, lo stato assume _valori continui_. Per Boltzmann (molto prima della QM) tuttavia, il sistema doveva essere descritto _discretizzando lo spazio delle fasi_ in cellette di "piccola" dimensione. La giustificazione di ciò è operativa (dal sapore sperimentale): assumiamo di avere una precisione limitata nelle misurazioni, allora gli stati all'interno di una stessa celletta sono indistinguibili: _è una risoluzione massima_. La descrizione del continuo si recupera nel limite di precisione infinita.
 
-Oggi sappiamo dal _pricipio di intedeterminazione_ che questo limite di precisione è anche teorico:
+Oggi sappiamo dal _principio di indeterminazione_ che questo limite di precisione è anche teorico:
 $$
 \delta p \delta q \geq h
 $$
-Describiamo quindi lo stato del sistema con una celletta $\Delta$ di volume $h^{3N}$, e associamo a ciascuna celletta i momenti e posizioni che corrispondono al centro di essa.
+Descriviamo quindi lo stato del sistema con una celletta $\Delta$ di volume $h^{3N}$, e associamo a ciascuna celletta i momenti e posizioni che corrispondono al centro di essa.
 
 ### Come dipende la teoria da $h$?
 In luce del principio di indeterminazione, è  naturale identificare $h$, il volume delle cellette $h^{3N}$, con la costante di Planck. Ma Boltzmann come ha potuto fissarla/studiarla?
 
 Prima imponiamo delle richieste sulla nostra descrizione discreta in cellette.
-
 ### Dinamica microscopica discreta
 Abbiamo discretizzato lo spazio delle fasi, discretizziamo anche la dinamica facendo lo stesso col tempo: introduciamo un intervallo temporale "piccolo" $\tau$. Come per la costante $h$, dobbiamo indagare che significa "piccolo".
 

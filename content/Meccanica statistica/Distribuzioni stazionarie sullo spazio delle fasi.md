@@ -31,7 +31,7 @@ i coefficienti $p_i$ sono interpretati come la _probabilità del ciclo i_.
 Boltzmann fece l'ipotesi che:
 >> Stati di equilibrio macroscopici $\iff$ distribuzioni stazionarie $\mu$
 
-Boltzmann chiamo questi distribuzioni _monoedes_, il termine moderno è _Ensembles_, douto a Gibbs.
+Boltzmann chiamo questi distribuzioni _monodes_, il termine moderno è _Ensembles_, dovuto a Gibbs.
 
 Il valore medio di un'osservabile data una distribuzione stazionaria, quindi uno stato di equilibrio è:
 $$

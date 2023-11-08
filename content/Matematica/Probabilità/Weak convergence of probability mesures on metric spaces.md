@@ -27,7 +27,7 @@ $$
 it is clear that $\mu_n \Rightarrow \mu$. But any set $A$ such that the origin on the boundary like $A = (0,1]$ has always mesure $\mu_n(A)=1 \;\forall n$, but $\mu(A)=0$.
 
 The following theorem characterizes weak convergence.
-## Theoream (Portmanteau)
+## Theorem (Portmanteau)
 Let $(\mu_n)_{n\geq 1}$, $\mu$ be probability mesures on $(S,\mathcal{S})$. The following are equivalent:
 1. $\mu_n \Rightarrow \mu$ as $n\to\infty$,
 2. $\mu_n(f) \to \mu(f)$ for all $f:S\mapsto \mathbb{R}$ _bounded uniformly continuos_.

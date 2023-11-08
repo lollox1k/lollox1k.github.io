@@ -1,6 +1,6 @@
 # Modello Curie-Weiss
 
-E' la versione _mean-field_ del [[Modello di Ising]], che è risolvibile analiticamente solo per $d=1$ e $d=2$ con campo esterno $h=0$. L'approssimazione di campo medio fornisce risultati qualitativamente corretti per dimensioni abbastanza elevate (esatte per $d > 4$), nel caso $d=1$ sbaglia anche qualitativamente, mostrando una transizione di fase che nella soluzione esatta è assente.
+E' la versione _mean-field_ del [[The Ising model]], che è risolvibile analiticamente solo per $d=1$ e $d=2$ con campo esterno $h=0$. L'approssimazione di campo medio fornisce risultati qualitativamente corretti per dimensioni abbastanza elevate (esatte per $d > 4$), nel caso $d=1$ sbaglia anche qualitativamente, mostrando una transizione di fase che nella soluzione esatta è assente.
 
 ## L'approssimazione mean-field
 
@@ -31,7 +31,7 @@ Vogliamo mostrare come il modello sia paramagnetico ad alte temperaure e ferroma
 
 ## Campo esterno $h=0$
 
-Il caso di campo esterno nullo $h=0$ rende _l'Hamiltoniana simmetrica_ per inversione $\sigma \mapsto -\sigma$. Questo implica che la densità di _magnetizzazzione_ $m_N$ abbia una _distribuzione di probabilità simmetrica_, ovvero:
+Il caso di campo esterno nullo $h=0$ rende _l'Hamiltoniana simmetrica_ per inversione $\sigma \mapsto -\sigma$. Questo implica che la densità di _magnetizzazione_ $m_N$ abbia una _distribuzione di probabilità simmetrica_, ovvero:
 $$
 \langle m \rangle^{CW} = 0
 $$
@@ -39,11 +39,11 @@ ci aspettiamo che ad alte temperature gli spin siano praticamente indipendenti, 
 
 ### Teorema
 Sia $h=0$, allora esiste una _temperatura critica_ $\beta_c := \frac{1}{2d}$ tale che:
-1. Quando $\beta \leq \beta_c$ la magnetizzazzione si concentra sullo zero: $\forall \epsilon > 0$ $\exists N$ tale che:
+1. Quando $\beta \leq \beta_c$ la magnetizzazione si concentra sullo zero: $\forall \epsilon > 0$ $\exists N$ tale che:
 $$
 \mu^{CW}(m_N \in (-\epsilon, \epsilon)) \geq 1-2e^{-cN}
 $$
-2. Quando $\beta > \beta_c$, la magnetizzazzione è limitata dallo zero: esiste $m^*(\beta) > 0$ detta _magnetizzazzione spontanea_, tale che per $\epsilon > 0$ abbastanza piccoli, esistge un $b(\epsilon, \beta) > 0$ tale che:
+2. Quando $\beta > \beta_c$, la magnetizzazione è limitata dallo zero: esiste $m^*(\beta) > 0$ detta _magnetizzazione spontanea_, tale che per $\epsilon > 0$ abbastanza piccoli, esiste un $b(\epsilon, \beta) > 0$ tale che:
 $$
 \mu(m \in J) \geq 1-2e^{bN}
 $$

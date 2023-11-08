@@ -15,7 +15,7 @@ $$
 K(\mu)= \int \left( \sum_i^N \frac{p_i^2}{2m}\right)e^{-\beta E(p,q)}dqdp
 $$
 $$
-v = \frac{V}{N}
+T := \frac{3}{2 k_B} \frac{K(\mu)}{N} \qquad v = \frac{V}{N}
 $$
 $$
 U(\mu) = \frac{-\partial}{\partial\beta}\log Z(\beta,V)
@@ -41,7 +41,7 @@ dobbiamo varificare la relazione:
 $$
 du = Tds - pdV
 $$
-un conto diretto sulla temperatura, definita come proporzionale alll'energia cinetica media rivela che:
+un conto diretto sulla temperatura (oppure usando il teorema di [[Equipartition of energy]]), definita come proporzionale alll'energia cinetica media rivela che:
 $$
 T = \frac{1}{k_B \beta}, \qquad \frac{dT}{T} = -\frac{d\beta}{\beta}
 $$

@@ -31,13 +31,13 @@ Si può estendere a successioni di parallelepipedi in $\mathbb{Z}^d$. In questo 
 $$
 a(R_1 \cup R_2) \leq a(R_1) + a(R_2) \quad R_1 \cap R_2 = \emptyset
 $$
-Scegliamo una successioni di parlallelepipedi semplice:
+Un esempio è la successione di parallelepipedi semplice:
 $$
 B(n) = \{-n,\dots,n\}^d
 $$
 Vale il seguente teorema:
-### Teorema
-Sia $a : \mathcal{R} \mapsto \mathbb{R}$ _subadditiva_ e _invariante per traslazioni_ e una sequenza di cubi $|\Lambda_n| \to \infty$. Allora:
+### Lemma Fekete
+Sia $a : \mathcal{R} \mapsto \mathbb{R}$ _subadditiva_ e _invariante per traslazioni_ e una sequenza di parallelepipedi $|\Lambda_n| \to \infty$. Allora:
 $$
 \lim_{n\to\infty} \frac{a(\Lambda_n))}{|\Lambda_n|} = \inf_{\Lambda \in \mathcal{R}} \frac{a(\Lambda)}{|\Lambda|}
 $$
