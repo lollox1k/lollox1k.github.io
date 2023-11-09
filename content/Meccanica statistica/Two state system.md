@@ -17,7 +17,7 @@ Fissata un'energia $E$, corrispondono ad essa:
 $$
 \binom{N}{ \frac{E/h+ N}{2}}
 $$
-Possiamo calcolare l'entropia microcanonica passando al logaritmo. Siccome siamo iteressati al limite termodinamico, usiamo la [[Formula di Stirling]]. Per sempilcità assumiamo $h=1$.
+Possiamo calcolare l'entropia microcanonica passando al logaritmo. Siccome siamo interessati al limite termodinamico, usiamo la [[Formula di Stirling]]. Per semplicità assumiamo $h=1$.
 Definisco l'energia per particella $E = eN$, e la quantità $\alpha = \frac{1+e}{2}$.
 $$
 S(E) = N(1-\alpha)\ln(1-\alpha) - N\alpha \ln \alpha - N + N\alpha -N(1-\alpha)\ln(N(1-\alpha)) +N(1-\alpha)

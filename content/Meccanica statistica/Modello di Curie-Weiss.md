@@ -72,28 +72,28 @@ quindi abbiamo:
 $$
 \mathcal{H}^{CW}(m_N) = -JN m_N^2
 $$
-con $m_N \in [-1,1]$ e razionale del tipo $m = \frac{2k}{N}$ con $k = -N,\dots,N$.
+con $m_N \in [-1,1]$ e razionale del tipo $m = \frac{2k}{N}$ con $k = -\frac N2,\dots,\frac N2$.
 
 Abbiamo quindi un [[Two state system]], con entropia per particella:
 $$
 s(m) = -\frac{\left(1-m\right)}{2}\ln\left(\frac{\left(1-m\right)}{2}\right) -\frac{\left(1+m\right)}{2}\ln\left(\frac{\left(1+m\right)}{2}\right)
 $$
 
-Calcoliamo la probabilità di osservare una magnetizzazzione media $m$, con la misura di Gibbs:
+Calcoliamo la probabilità di osservare una magnetizzazione media $m$, con la misura di Gibbs:
 $$
 \mu^{CW}(m_N = m) = \frac{\binom{N}{N(m+1)/2} e^{\beta JNm_N^2 }}{Z^{CW}} 
 $$
-dove il coefficiente binomiale è un fattore di degenerazione, conta quante configurazione hanno una magnetizzazzione media $m_N$.
+dove il coefficiente binomiale è un fattore di degenerazione, conta quante configurazione hanno una magnetizzazione media $m_N$.
 
 Per la funzione di partizione $Z^{CW}$, siccome siamo interessati all'andamento asintotico $N\to\infty$, possiamo stimarla con il termine massimo della somma:
 $$
 \max_m\binom{N}{N\frac{m+1}{2}} e^{\beta JNm_N^2 }\leq Z^{CW} \leq (N+1) \max_m\binom{N}{N\frac{m+1}{2}} e^{\beta JNm_N^2 }
 $$
-l'esponenziale tente a far crescere $m$, mentre il coefficiente binomiale è massimo per $m=0$. Dobbiamo capire come si bilanciano i due contributi nell'ottimo. Possiamo usare la [[Formula di Stirling]] per approssimare il coefficiente binomiale, esattamente per come abbiamo fatto nel [[Two state system]], quindi asintoticamente si comporta come $e^{Ns(m)}$. 
+l'esponenziale tende a far crescere $m$, mentre il coefficiente binomiale è massimo per $m=0$. Dobbiamo capire come si bilanciano i due contributi nell'ottimo. Possiamo usare la [[Formula di Stirling]] per approssimare il coefficiente binomiale, esattamente per come abbiamo fatto nel [[Two state system]], quindi asintoticamente si comporta come $e^{Ns(m)}$. 
 $$
 Z^{CW} \leq (N+1) e^{N \max_m\{ s(m) + \beta J m_N^2 \}}
 $$
-osservare che $e(m) = -J m_N^2$, riconoso un'energia libera:
+osservare che $e(m) = -J m_N^2$, riconosco l'energia libera:
 $$
 \beta f(m) := \beta e(m) -s(m)
 $$
@@ -101,7 +101,7 @@ massimizzare l'esponente equivale a minimizzare l'energia libera. Il fattore $(N
 $$
 \lim_{N\to\infty} \frac{-1}{\beta N}\log Z^{CW} = \min_m f(m)
 $$
-Quindi la probabilità di avere una magnetizzazzione media $m$ sarà:
+Quindi la probabilità di avere una magnetizzazione media $m$ sarà:
 $$
 \lim_{N\to\infty}-\frac{1}{\beta N}\log\mu^{CW}(m_N = m) = f(m)-\min_m f(m)
 $$
@@ -109,7 +109,7 @@ e la probabilità che $m \in J \subseteq [-1,1]$
 $$
 \lim_{N\to\infty}-\frac{1}{\beta N}\log\mu^{CW}(m_N \in J) = \min_{m \in J} f(m)-\min_\hat m f(\hat m) = \min_{m \in J} I(m)
 $$
-possiamo risolvere il problema di minimizzazzione derivando (la funzione è smooth)
+possiamo risolvere il problema di minimizzazione derivando (la funzione è smooth)
 $$
 \frac{\partial I}{\partial m} = (-2 \beta J m + \frac{1}{2}\log(1 - m) - \frac{1}{2}\log(1 + m)) = 0
 $$
