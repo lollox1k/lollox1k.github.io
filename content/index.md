@@ -6,7 +6,8 @@ title: Home page
 ## About me
 I'm an applied math student at [Sapienza università di Roma](https://www.uniroma1.it/en/pagina-strutturale/home).
 Interests: [[Probabilità|Probability]], Algorithms and [[Deep Learning]].
-My [CV](https://drive.google.com/file/d/1UJZGaAlSpwuhnC8c9jzuYk1BF0qVPQnI/view?usp=sharing)
+
+You can find my CV [cv_11_23.pdf|here].
 
 ## Contacts
 - **Email**: lorenzo.gregoris@gmail.com
