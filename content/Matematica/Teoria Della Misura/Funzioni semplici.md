@@ -1,4 +1,4 @@
-Classe di partenza per defnire l' [[Integrale di Lebesgue]], in letteratura si trovano definizioni un po' diverse. Banalmente, una funzione semplice (unidimensionale) è una funzione $\phi : E \to [0,\infty]$  che assume un numero finito di valori non negativi(è costante a tratti). 
+Classe di partenza per defnire l' [[Lebesgue's integral]], in letteratura si trovano definizioni un po' diverse. Banalmente, una funzione semplice (unidimensionale) è una funzione $\phi : E \to [0,\infty]$  che assume un numero finito di valori non negativi(è costante a tratti). 
 $$
 C = \{ f(a) \quad | \quad a \in E\} \qquad |C| < \infty 
 $$

@@ -1,5 +1,5 @@
 #### Misura esterna 
-Aggiungiamo due condizioni ragionevoli ad una [[Proto misura]], la subadditività e la monotonia (è sempre deifnita su tutto l'insieme delle parti). E' una protomisura $\mu^* : 2^E \to [0, +\infty]$ con le seguenti proprietà: 
+Aggiungiamo due condizioni ragionevoli ad una [[Proto misura]], la subadditività e la monotonia (è sempre definita su tutto l'insieme delle parti). E' una protomisura $\mu^* : 2^E \to [0, +\infty]$ con le seguenti proprietà: 
 1. monotonia: 
 $$
 A \subseteq B \implies \mu^*(A) \leq \mu^*(B)

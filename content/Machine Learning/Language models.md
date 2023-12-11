@@ -3,8 +3,7 @@ A _Language Model_ (LM) is a probability distribution over the sequences of word
 
 The task of a language model is to compute the probability of a given sentence.
 
-
-### Types of LM
+## Types of LM
 - **Unigram** basic (false) assumption that the probability of each word is indipendent, so that
 $$
 P(w_1,w_2,\dots, w_n) = P(w_1)P(w_2)\cdots P(w_n)

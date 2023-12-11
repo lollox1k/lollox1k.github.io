@@ -5,7 +5,7 @@ $$
 \int_Y g\,d(h_*\mu) = \int_X g\circ h \,d\mu
 $$
 **Proof** Use the _standard machinery_.
-Assume $g = \mathbb{1}_C$ with $C \in \mathcal{E}$ a measurable set. By definition of the [[Integrale di Lebesgue|lebesgue integral]] of a simple function
+Assume $g = \mathbb{1}_C$ with $C \in \mathcal{E}$ a measurable set. By definition of the [[Lebesgue's integral|lebesgue integral]] of a simple function
 $$
 \int_Y \mathbb{1}_C\,d(h_*\mu) = h_*\mu(C) = \mu(h^{-1}(C))
 $$

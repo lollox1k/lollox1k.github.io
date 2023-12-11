@@ -162,7 +162,7 @@ $$
 This depends on the differentiability of $\psi$ w.r.t $h$. Since it's convex, we know that the left and right derivatives always [[Funzioni convesse#Proprietà|exists]], and that $\psi$ is not differentiable in a set of measure zero. 
 
 Moreover, when $\psi$ is differentiable the limit exchange [[Funzioni convesse#Proprietà|holds]]. 
-This fact, that the magnetization density is discontinuos when $\psi$ is non differentiable, leads us to a first definition of phase transition:
+This fact, that the magnetization density is discontinuous when $\psi$ is non differentiable, leads us to a first definition of phase transition:
 
 **Def** (First order phase transition) The pressure $\psi$ exhibits a **first order phase transition** at $(\beta,h)$ is it fails to be differentiable w.r.t $h$ in this point. 
 
@@ -214,7 +214,7 @@ $$
 $$
 this shows that the pressure is _analytic_ and differentiables for every value $(\beta,h)$. We can conclude that _there isn't a first order phase transition_.
 
-One can compute the magnetization $m$ and show that it's continuos, in particular the spontaneus magnetization
+One can compute the magnetization $m$ and show that it's continuous, in particular the spontaneus magnetization
 $$
 m^*(\beta) := \lim_{h\downarrow 0} m(\beta,h) = m(\beta,0) = 0 \quad \forall \beta \geq 0
 $$
@@ -223,7 +223,7 @@ $$
 
 ### Infinite volume Gibbs state
 
-Here we define an infinite volume Gibbs state, as a linear functional on local functions. The link of this section with [[Misure di Gibbs a volume infinito|Infinite-volume Gibbs measures]] is given by the [[Riesz represebtation theorem]].
+Here we define an infinite volume Gibbs state, as a linear functional on local functions. The link of this section with [[Misure di Gibbs a volume infinito|Infinite-volume Gibbs measures]] is given by the [[Riesz representation theorem]].
 
 **Def** An **Infinite-volume Gibbs state** is a functional mapping a local function $f$ to a real number $\langle f \rangle$ satisfying:
 1. Normalization $\langle 1 \rangle = 1$

@@ -53,11 +53,11 @@ $$
 \limsup_n \mu(f_n) \leq \mu(\limsup_n f_n)
 $$
 ### Dim 
-1. Sia $g_n := \inf_{k \geq n} f_k$, allora $\liminf_n f_n = \lim_n g_n$.  Ovvio che $g_k \leq f_k$. Il limite è ovviamente monotono non descrescente, posso usare il teorema della convergenza monotona:
+1. Sia $g_n := \inf_{k \geq n} f_k$, allora $\liminf_n f_n = \lim_n g_n$.  Ovvio che $g_k \leq f_k$. Il limite è ovviamente monotono non decrescente, posso usare il teorema della convergenza monotona:
 $$
 \mu(\liminf_n f_n) = \mu(\lim_n g_n) =^{MCT} \lim_n \mu(g_n) \leq \liminf_n \mu(f_n) 
 $$
-2. L'osservazione chiave è che i sup di $f_n$ sono gli inf di $-f_n$, che posso rendere non negativa con il bound superiore $g$. Basta applicare  il lemma alla successione di funzioni non negataive $g-f_n$ ed usare la linearità dell'integrale:
+2. L'osservazione chiave è che i sup di $f_n$ sono gli inf di $-f_n$, che posso rendere non negativa con il bound superiore $g$. Basta applicare  il lemma alla successione di funzioni non negative $g-f_n$ ed usare la linearità dell'integrale:
 $$
 \mu(\liminf_n g-f_n) \leq \liminf_n \mu(g-f_n)
 $$

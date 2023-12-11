@@ -1,6 +1,6 @@
 ## Poincarré return theorem
 
-**Theorem** Let $g$ be a continuos, bijective transformation that preserves volumes defined in Euclidean space to itself. Suppose that there exists a finite region $D$  such that $gD = D$. Then for every neighourhood $U$ of every point of $D$, there exists a point $x \in U$ that eventually returns in $U$, that is 
+**Theorem** Let $g$ be a continuous, bijective transformation that preserves volumes defined in Euclidean space to itself. Suppose that there exists a finite region $D$  such that $gD = D$. Then for every neighourhood $U$ of every point of $D$, there exists a point $x \in U$ that eventually returns in $U$, that is 
 $$
 g^n x \in U \qquad \text{ for some } n > 0
 $$

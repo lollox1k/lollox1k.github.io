@@ -30,14 +30,14 @@ The following theorem characterizes weak convergence.
 ## Theorem (Portmanteau)
 Let $(\mu_n)_{n\geq 1}$, $\mu$ be probability mesures on $(S,\mathcal{S})$. The following are equivalent:
 1. $\mu_n \Rightarrow \mu$ as $n\to\infty$,
-2. $\mu_n(f) \to \mu(f)$ for all $f:S\mapsto \mathbb{R}$ _bounded uniformly continuos_.
+2. $\mu_n(f) \to \mu(f)$ for all $f:S\mapsto \mathbb{R}$ _bounded uniformly continuous_.
 3. $\limsup_n \mu_n(C) \leq \mu(C)$ for all $C \in \mathcal{S}$ _chiusi_.
 4. $\liminf_n \mu_n(A) \geq \mu(A)$ for all $A \in \mathcal{S}$ _aperti_.
 5. $\lim_n \mu_n(A) = \mu(A)$ for all $A \in \mathcal{S}$ such that $\mu(\partial A)=0$.
 
 **Proof**
 $(1 \implies 2)$ obvious since uniform continuity implies continuity. 
-$(2 \implies 3)$  We can't use the characteristic function of $C$, since it's discountinuos. We can approximate with a uniform continuos function with a parameter $\epsilon$. Then using **2**:
+$(2 \implies 3)$  We can't use the characteristic function of $C$, since it's discountinuos. We can approximate with a uniform continuous function with a parameter $\epsilon$. Then using **2**:
 $$
 \mathbb{1}_C \leq f_\epsilon \leq \mathbb{1}_{C_\epsilon}
 $$
@@ -84,7 +84,7 @@ In the language of probability, this means that:
 $$
 X^n \Rightarrow X \iff F_{X^n}(x)\to F_X(x)
 $$
-for all $x$ where $F_X$ is continuos.
+for all $x$ where $F_X$ is continuous.
 
 
 

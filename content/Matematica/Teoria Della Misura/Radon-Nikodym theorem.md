@@ -2,7 +2,7 @@
 
 Let $(X, \mathcal{A})$ be a measurable space, $\lambda$ and $\mu$ two measure on this space.
 
-**Def**  A measure $\mu$ algebra is called _absolutely continuos_ w.r.t. another measure $\lambda$ if
+**Def**  A measure $\mu$ algebra is called _absolutely continuous_ w.r.t. another measure $\lambda$ if
 $$
 \lambda(A)=0 \implies \mu(A)=0, \quad \forall A \in \mathcal{B}(\mathbb{R})
 $$
@@ -18,8 +18,8 @@ this is written as $\mu \perp \lambda$.
 Usually one works with measures on the reals, so that the measurable space is $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$ and $\lambda$ is the Lebesgue measure.
 
 Some examples: 
-- The zero measure is absolutely continuos w.r.t any measure.
-- Every measure is absolutely continuos w.r.t itself.
+- The zero measure is absolutely continuous w.r.t any measure.
+- Every measure is absolutely continuous w.r.t itself.
 - The Dirac measure $\delta_0$ is singular w.r.t. the Lebesgue measure, since:
 $$
 \delta_0(\{0\}^c) = 0 \quad\text{ and } \mathcal{L}(\{0\}) = 0
@@ -32,11 +32,11 @@ $$
 $$
 \mu = \mu_{ac} + \mu_{s}, \qquad \mu_{ac} << \mathcal{L}, \, \mu_s \perp \mathcal{L}
 $$
-2. There is a measurable map $h: \mathbb{R} \to [0,\infty)$ such that
+2. There is a measurable map $g: \mathbb{R} \to [0,\infty)$ such that
 $$
 \mu_{ac}(A) = \int_A g d\mathcal{L}, \qquad \forall A \in \mathcal{B}(\mathbb{R})
 $$
-$g$ is called the _Radon-Mikodym derivative_.
+$g$ is called the _Radon-Nikodym derivative_.
 
 **Proof** (Von-Neumann) First we prove a result for finite measure spaces, and then extend it to $\sigma$-finite spaces.
 
@@ -55,7 +55,7 @@ $$
 |T[u]| \leq  \Vert \mu \Vert_1 \leq \Vert \mu\Vert_2 \sqrt{\mu(X)}
 $$
 where we have used the [[Holder inequality]]. 
-Then by [[Riesz represebtation theorem]] there exists a $g \in L^2(X,\mathcal{A}, \sigma)$ such that
+Then by [[Riesz representation theorem]] there exists a $g \in L^2(X,\mathcal{A}, \sigma)$ such that
 $$
 T[u] = \int_X ud\mu = \int_u ug\,d\sigma, \forall u \in L^2(\sigma)
 $$

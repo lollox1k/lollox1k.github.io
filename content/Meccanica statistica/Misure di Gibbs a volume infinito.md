@@ -81,7 +81,7 @@ $$
 \langle f \rangle = \langle \langle f\rangle_\Delta^\cdot\rangle
 $$
 
-Rephrasing this with the probability measure obtained from the [[Riesz represebtation theorem]], for all local event $A \in \mathcal{F}$ 
+Rephrasing this with the probability measure obtained from the [[Riesz representation theorem]], for all local event $A \in \mathcal{F}$ 
 $$
 \mu(A) = \int \mu_\Delta^\omega(A) \mu(d\omega)
 $$
@@ -227,12 +227,12 @@ the diagonal subsequence $\omega^{n_{kk}} \to \omega$ converges to this element.
 
 We can now define a notion of continuiti:
 
-**Def** A function $f : \Omega \to \mathbb{R}$ is **continuos** if given any $\omega^n \to \omega$ 
+**Def** A function $f : \Omega \to \mathbb{R}$ is **continuous** if given any $\omega^n \to \omega$ 
 $$
 f(\omega^n) \to f(\omega)
 $$
 
-**Oss** Clealry all local function are continuos.
+**Oss** Clealry all local function are continuous.
 
 
 We now define the notion of convergence in the space of measures on $(\Omega, \mathcal{F})$.
@@ -249,7 +249,7 @@ $$
 1. $\mu = \nu$
 2. $\mu(C) = \nu(C)$ for all $C \in \mathcal{C}$
 3. $\mu(g) = \nu(g)$ for all local functions
-4. $\mu(f) = \nu(f)$ for all continuos functions.
+4. $\mu(f) = \nu(f)$ for all continuous functions.
 **Proof** $1 \implies 2$ Is trivial. $2 \implies 3$ follows simple by writing a local function as a linear combination of cylinder sets, plus an infinite set. $2 \impliedby 3$ since $\mathbb{1}_C$ is a local function. $3 \implies 4$ since $g$ are dense in $f$: let $g_ \to f$, then
 $$
 |\mu(f) - \mu(g_n)| \leq \Vert f-g_n\Vert_\infty \to 0
@@ -258,11 +258,11 @@ so that $\mu(g_n) \to \mu(f)$. Similarly $\nu(g_n) \to \nu(f)$, and
 $$
 \mu(f) = \lim_{n\to\infty} \mu(g_n) = \lim_{n_\to\infty} \nu(g_n) = \nu(f)
 $$
-$3 \impliedby 4$ trivial since local functions are continuos. $\square$ 
+$3 \impliedby 4$ trivial since local functions are continuous. $\square$ 
 
 ### Quasilocality
 
-**Def** (Quasilocal specification) A specification $\pi = \{\pi_\Lambda\}$ is **quasilocal** if each kernel $\pi_\Lambda$ is continuos w.r.t. its boundary condition. That is, for all $C \in \mathcal{C}$, $\omega \mapsto \pi_\Lambda(C\mid \omega) \in C(\Omega)$.
+**Def** (Quasilocal specification) A specification $\pi = \{\pi_\Lambda\}$ is **quasilocal** if each kernel $\pi_\Lambda$ is continuous w.r.t. its boundary condition. That is, for all $C \in \mathcal{C}$, $\omega \mapsto \pi_\Lambda(C\mid \omega) \in C(\Omega)$.
 
 This is saying that this probability measure depends weakly on the "far" values of $\omega$. 
 
@@ -277,7 +277,7 @@ since the kernel are consistent, once $n$ is large enough $\Lambda \subset B(n)$
 $$
 \mu_n \pi_\Lambda = \pi_{B(n)}\pi_{\Lambda} = \pi_{B(n)} = \mu_n
 $$
-we know that there exists a subsequence converging to an element $\mu_{n_k} \Rightarrow \mu$. We prove that $\mu \in \mathcal{G}(\pi)$.  Pick a continuos function $f \in C(\Omega)$. 
+we know that there exists a subsequence converging to an element $\mu_{n_k} \Rightarrow \mu$. We prove that $\mu \in \mathcal{G}(\pi)$.  Pick a continuous function $f \in C(\Omega)$. 
 $$
 \mu \pi_\Lambda(f) = \mu(\pi_\Lambda f)
 $$
@@ -325,7 +325,7 @@ where $i$ is a fixed spin in $\Lambda$, and $D$ is the minimum distance between 
 $$
 |\pi_\Lambda(\tau_\Lambda \mid \omega)-\pi_\Lambda(\tau_\Lambda \mid \omega')| \rightarrow 0 \quad \text{ as } D\to\infty
 $$
-Any cylinder set $C$ can be written as a finite union of states $\tau_\Lambda$, so $\pi_\Lambda$ is continuos, hence it's quasilocal. $\square$ 
+Any cylinder set $C$ can be written as a finite union of states $\tau_\Lambda$, so $\pi_\Lambda$ is continuous, hence it's quasilocal. $\square$ 
 
 
 >> We have a procedure to construct Infinite-volume Gibbs measures: 

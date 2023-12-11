@@ -9,7 +9,7 @@ Approssimiamo la misura di $B$ "da fuori" (per questo il nome misura esterna). N
 Non esista tale successione, ovvero non esistono $C_i$ in grado di ricoprire $B$, poniamo per convenzione $inf\{ \emptyset \}=\infty$. 
 
 #### Insiemi misurabili secondo Caratheodory
-Data una misura esterna, definita quindi su tutto l'insieme delle parti, posso in maniera molto naturale definire una famiglia di insieme, detti misurabili (spoiler, sono una sigma algenbra, quindi induco una misura, anche completa).
+Data una misura esterna, definita quindi su tutto l'insieme delle parti, posso in maniera molto naturale definire una famiglia di insieme, detti misurabili (spoiler, sono una sigma algebra, quindi induco una misura, anche completa).
 L'insieme $A$ si dice misurabile secondo Caratheodory se vale la proprietà di _spezzamento_:
 $\forall B \in 2^E$  deve valere:
 $$

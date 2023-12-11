@@ -31,7 +31,7 @@ $$
 f_k \leq g_k \leq f_k \leq f
 $$
 e prendendo il limite per $k \to \infty$ ottengo che $g_k \uparrow f$.
-Quindi, dalla definizione dell'[[Integrale di Lebesgue]]:
+Quindi, dalla definizione dell'[[Lebesgue's integral]]:
 $$
 \int f d\mu = \lim_n \int g_n d\mu
 $$

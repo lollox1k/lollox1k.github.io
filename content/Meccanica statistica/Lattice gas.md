@@ -271,7 +271,7 @@ this implies for the partition function
 $$
 Z_{\beta, \Lambda_n, N_n} \geq e^{-\beta|\Lambda_n| f_\beta(\rho) -\beta|\Lambda_n| \epsilon }
 $$
-this is the trick: let $\rho_n \to \rho^*$ be a sequence converging to the $\sup$. Since $\mu \rho - f_\beta(\rho$ ) is continuos the values is attained for some $\rho^*$:
+this is the trick: let $\rho_n \to \rho^*$ be a sequence converging to the $\sup$. Since $\mu \rho - f_\beta(\rho$ ) is continuous the values is attained for some $\rho^*$:
 $$
 \mu\rho^*-f_\beta(\rho^*) = \sup_\rho \{\mu\rho -f_\beta(\rho)\}
 $$

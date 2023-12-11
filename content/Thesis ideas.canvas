@@ -1,0 +1,25 @@
+{
+	"nodes":[
+		{"id":"1eaf0cf90ded14ba","x":300,"y":-60,"width":160,"height":60,"color":"2","type":"text","text":"Quantum"},
+		{"id":"a6effaf9b72bafd1","x":-580,"y":-60,"width":165,"height":50,"color":"5","type":"text","text":"Probability"},
+		{"id":"8ddfe32097d1bdfa","x":-160,"y":-320,"width":175,"height":50,"color":"3","type":"text","text":"Algorithms"},
+		{"id":"32d7494b2fb2e4a7","x":-145,"y":200,"width":145,"height":50,"color":"6","type":"text","text":"Graphs"},
+		{"id":"80e3f348c80b00f9","x":-197,"y":-160,"width":250,"height":100,"type":"text","text":"Quantum Walks\n- hitting times "},
+		{"id":"ccfe83cbfb1722be","x":240,"y":-330,"width":300,"height":60,"type":"text","text":"Quantum linear algebra"},
+		{"id":"3bc934a2795d364d","x":-20,"y":-480,"width":200,"height":60,"type":"text","text":"Quantum ML"},
+		{"id":"75d49eeaacdc6f02","x":-719,"y":-441,"width":279,"height":60,"color":"#e81717","type":"text","text":"Simone Severini UCL"},
+		{"id":"5933a21f0442c34e","x":-479,"y":100,"width":282,"height":60,"type":"text","text":"Quantum Information"}
+	],
+	"edges":[
+		{"id":"14ae5c33867692f9","fromNode":"a6effaf9b72bafd1","fromSide":"right","toNode":"80e3f348c80b00f9","toSide":"left"},
+		{"id":"9059b7b3f43d0515","fromNode":"1eaf0cf90ded14ba","fromSide":"left","toNode":"80e3f348c80b00f9","toSide":"right"},
+		{"id":"b25437bbb35405c1","fromNode":"1eaf0cf90ded14ba","fromSide":"top","toNode":"ccfe83cbfb1722be","toSide":"bottom"},
+		{"id":"62682d392757c1ab","fromNode":"8ddfe32097d1bdfa","fromSide":"right","toNode":"ccfe83cbfb1722be","toSide":"left"},
+		{"id":"8247302dcc5fcf1d","fromNode":"32d7494b2fb2e4a7","fromSide":"top","toNode":"80e3f348c80b00f9","toSide":"bottom"},
+		{"id":"78792ed2cb3e511a","fromNode":"8ddfe32097d1bdfa","fromSide":"left","toNode":"3bc934a2795d364d","toSide":"left"},
+		{"id":"60c7202fb2dad10f","fromNode":"1eaf0cf90ded14ba","fromSide":"left","toNode":"3bc934a2795d364d","toSide":"bottom"},
+		{"id":"5b19c1dcefceca6b","fromNode":"a6effaf9b72bafd1","fromSide":"bottom","toNode":"5933a21f0442c34e","toSide":"top"},
+		{"id":"8157db736b038ef6","fromNode":"1eaf0cf90ded14ba","fromSide":"bottom","toNode":"5933a21f0442c34e","toSide":"right"},
+		{"id":"eb709986d9973861","fromNode":"80e3f348c80b00f9","fromSide":"top","toNode":"8ddfe32097d1bdfa","toSide":"bottom"}
+	]
+}

@@ -25,7 +25,7 @@ We use this sequence to define a random walk on $\mathbb{R}$:
 $$
 S_n = \sum_{k=1}^n \xi_k \qquad S_0 = 0
 $$
-we make this random walk into a continuos function by linear interpolation, for $t \in [0,1]$ define
+we make this random walk into a continuous function by linear interpolation, for $t \in [0,1]$ define
 $$
 X_t^n := \frac{S_{\lfloor nt \rfloor}}{\sigma \sqrt{n}} + (nt-\lfloor nt \rfloor)\frac{\xi_{\lfloor nt \rfloor+1}}{\sigma \sqrt{n}}
 $$
@@ -59,7 +59,7 @@ However this holds when $X_n$ and $Y_n$, $X$ and $Y$ are indipendent. We can exp
 $$
 \left(\frac{S_{\lfloor ns \rfloor}}{\sigma \sqrt{n}}, \frac{S_{\lfloor nt \rfloor}}{\sigma \sqrt{n}}-\frac{S_{\lfloor ns \rfloor}}{\sigma \sqrt{n}}\right) \implies \left(B_s,B_t-B_s\right)
 $$
-the functions $h(x,y-x) = (x,y)$ is continuos, hence by the continuos mapping theorem our goal follows.
+the functions $h(x,y-x) = (x,y)$ is continuous, hence by the continuous mapping theorem our goal follows.
 
 Which follows from  the convergence in distribution of the marginals
 $$

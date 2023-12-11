@@ -3,7 +3,7 @@ In [[Misure di Gibbs a volume infinito]] we have studied the question wheter giv
 
 Following ideas from [[The Ising model]], we defined a notion of first order phase transition based on non-uniqueness of Gibbs measures.
 
-At the start of the proof of existence, which needs that the specification $\pi$ is quasilocal (continuos), we fixed a boundary condition $\omega \in \mathbb{Z}^d$. It tunrs out that uniqueness of Gibbs measure is the same as indipendence from boundary conditions: all the limiting measures are the same.
+At the start of the proof of existence, which needs that the specification $\pi$ is quasilocal (continuous), we fixed a boundary condition $\omega \in \mathbb{Z}^d$. It tunrs out that uniqueness of Gibbs measure is the same as indipendence from boundary conditions: all the limiting measures are the same.
 
 **Lemma** The following are equivalent:
 1. Uniqueness holds: $\mathcal{G}(\pi) = \{\mu\}$
@@ -52,7 +52,7 @@ $$
 
 The intuition is that the total oscillation tells us how "far" $f$ is from beeing a constant (which have total oscillation zero).
 
-**Lemma** Let $f$ be continuos and with finite total oscillation. Then $\Delta f \geq \sup f - \inf f$.
+**Lemma** Let $f$ be continuous and with finite total oscillation. Then $\Delta f \geq \sup f - \inf f$.
 **Proof** Let $\omega_s^n$ and $\omega_i^n$ be two sequences that converge to the sup and inf respectively, such that $\omega_s^n = \omega_i^n$ outside a volume $\Lambda^c$. Then a $n$ large enough
 $$
 \sup f - \inf f \leq f(\omega_s^n) - f(\omega_i^n) + \epsilon

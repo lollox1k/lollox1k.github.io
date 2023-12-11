@@ -128,7 +128,36 @@ $$
 $$
 
 
+# Dense subsets
+> [!proposition]
+> Let $1 \leq p < +\infty$. Simple functions are _dense_ in $L^p(\Omega)$: for any $f \in L^p(\Omega)$ there exists a sequence $\{h_k\}$ of simple functions such that:
+> $$
+> \lim_{n\to\infty} \Vert f - h_k \Vert_p = 0
+> $$
+> > [!proof]-
+> > Write $f = f_+ - f_-$, then we can assume w.l.o.g. that $f \geq 0$.
+> >  By the definition of [[Lebesgue's integral]], we can find a sequence of simple functions such that
+> >  $$
+> >  \int h_n d\mu \xrightarrow{n\to\infty} \sup\left\{ \int g_k d\mu\,\mid\, 0 \leq g_k \leq |f|^p, \,g_k\text{ simple} \right\}
+> >  $$
+> > So the case $p=1$ is proven. To prove the general case observe that:
+> >  $$
+> >  |f-h_n|^p \leq |f|^p
+> >  $$
+> > Since $|f - h_n|^p \to 0$ pointwise, using [[Dominated convergence theorem]]:
+> > $$
+> > \Vert f-h_n \Vert_p^p = \int |f-h_n|^p d\mu \xrightarrow{n\to\infty} 0 \qquad \square
+> > $$
+> >
 
+
+> [!proposition]
+> Let $1 \leq p < +\infty$. [[Distributions|Test functions]] $C_c^\infty(\Omega)$ are _dense_ in $L^p(\Omega)$: for any $f \in L^p(\Omega)$ there exists a sequence $\{\psi_k\} \subset C_c^\infty(\Omega)$ such that:
+> $$
+> \lim_{n\to\infty} \Vert f - \psi_k \Vert_p = 0
+> $$
+> > [!proof]-
+> >  By definition 
 
 
 

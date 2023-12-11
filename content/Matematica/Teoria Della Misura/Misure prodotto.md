@@ -1,5 +1,5 @@
 # Misure prodotto
-L'obbiettivo è arrivare al [[teorema di Fubini]] per lo scambio dell'ordine di integrazione. Prima dobbiamo definire il prodotto si spazio misurabili.
+L'obbiettivo è arrivare al [[Fubini-Tonnelli's theorem]] per lo scambio dell'ordine di integrazione. Prima dobbiamo definire il prodotto si spazio misurabili.
 
 ## Def Prodotto di Spazi misurabili
 Sia $(S_1,\Sigma_1)$ e $(S_2,\Sigma_2)$ due spazi misurabili, chiamiamo $S$ il loro prodotto cartesiano $S:= S_1 \times S_2$. Vogliamo costruire una $\sigma$-algebra prodotto, per farlo in maniera elegante definiamo l'opratore di proiezione:

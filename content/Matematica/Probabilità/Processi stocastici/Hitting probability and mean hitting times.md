@@ -107,7 +107,7 @@ $$
 \sum_{n \geq 0}\sum_{j \in I} nP_i(\tau_A = n|X_1 = j)P_i(X_1=j) + \sum_{j \in I}\infty P_i(\tau_A = \infty| X_1=j)
 $$
 
-we can exchange the sums by [[teorema di Fubini|Fubini's theorem]] (all the terms are non-negative), and $n\geq 1$ since $i \notin A$, and using the weak [[Markov property]]
+we can exchange the sums by [[Fubini-Tonnelli's theorem|Fubini's theorem]] (all the terms are non-negative), and $n\geq 1$ since $i \notin A$, and using the weak [[Markov property]]
 $$
 = \sum_{j \in I}p_{ij}\left( \sum_{n\geq 1}nP_j(\tau_A = n-1) + \infty P_j(\tau_A = \infty)\right)
 $$

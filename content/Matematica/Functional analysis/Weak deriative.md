@@ -7,7 +7,7 @@ $$
 $$
 il termine di bordo è nullo dato che la funzione test è a supporto compatto. Abbiamo _scaricato la derivata_ sulla funzione test (che è smooth). Siamo portati a definire una _derivata in senso debole_, anche per funzioni non derivabili.
 ### Definizione
-Per prima cosa ci restrigiamo alle funzioni _localmente integrabili_ (su un compatto) $L^1_{loc}(\Omega)$ con $\Omega \subseteq \mathbb{R}^n$. 
+Per prima cosa ci restringiamo alle funzioni _localmente integrabili_ (su un compatto) $L^1_{loc}(\Omega)$ con $\Omega \subseteq \mathbb{R}^n$. 
 Definiamo la _derivata in senso debole_ $f$ di una funzione $u\in L^1_{loc}$ se vale per ogni funzione test $\psi$ l'equivalenza:
 $$
 \int_\Omega f\psi dx =  - \int_\Omega u \psi'dx 

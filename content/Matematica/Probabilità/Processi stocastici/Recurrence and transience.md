@@ -111,7 +111,7 @@ Since $P_i(V_i=\infty) = 1$, we also know that
 $$
 \infty = \mathbb{E}_i[V_i] = \mathbb{E}_i\left[\sum_{n\geq 0} \mathbb{1}(X_n=i)\right] = \sum_{n\geq 0} P_i(X_n=i) = \sum_{n\geq 0} p_{ii}^{(n)}
 $$
-where we have used [[teorema di Fubini|Fubini's theorem]].
+where we have used [[Fubini-Tonnelli's theorem|Fubini's theorem]].
 
 Doing the same computation for a state such that $P_i(T_i < \infty) < 1$ we get
 $$

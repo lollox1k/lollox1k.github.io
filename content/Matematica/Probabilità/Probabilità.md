@@ -23,10 +23,10 @@
 5. [[Martingale convergence]]
 6. [[Uniformly integrable martingales]]
 
-### Continuos time martingales
-1. [[Stochastic processes in continuos time]]
+### continuous time martingales
+1. [[Stochastic processes in continuous time]]
 2. [[Filtration and stopping times]]
-3. [[Continuos time martingales]]
+3. [[continuous time martingales]]
 
 ### Brownian motion
 1. [[Weak convergence of probability mesures on metric spaces]]

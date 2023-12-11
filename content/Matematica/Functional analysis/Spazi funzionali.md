@@ -8,4 +8,4 @@ Le funzioni sopra menzionate prendono gli elmenti di uno spazio vettoriale (nel 
 
 Se lavoriamo con un integrale, dobbiamo limitarci alle funzioni integrabili... 
 
-E' bene chiarire che integrale usiamo, ovviamente quello di Lebesgue [[integrale di Lebesgue]]
+E' bene chiarire che integrale usiamo, ovviamente quello di Lebesgue [[Lebesgue's integral]]
