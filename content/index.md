@@ -6,7 +6,7 @@ I'm an applied math student at [Sapienza università di Roma](https://www.unirom
 
 Interests: [[Probabilità|Probability]], Algorithms and [[Deep Learning]].
 
-You can find my CV [[cv.pdf|here]].
+You can find my CV [here](cv.pdf).
 
 ## Contacts
 - **Email**: lorenzo.gregoris@gmail.com
