@@ -4,7 +4,7 @@ title: Home
 ## About me
 I'm an applied math student at [Sapienza università di Roma](https://www.uniroma1.it/en/pagina-strutturale/home).
 
-Interests: [[Probabilità|Probability]], Algorithms and [[Deep Learning]].
+Interests: [[Probabilità|Probability]], [[Metodi matematici in Meccanica Statistica|Statistical Mechanics]], Algorithms and [[Deep Learning]].
 
 You can find my CV [here](cv.pdf).
 
