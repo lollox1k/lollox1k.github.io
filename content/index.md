@@ -14,8 +14,10 @@ You can find my CV [here](cv.pdf).
 - **Linkedin**: [Lorenzo Gregoris](https://www.linkedin.com/in/lorenzo-gregoris-2a9b55136/)
 
 ## Notes
+- My masters's [[Master_Thesis.pdf|thesis]] "The Random Path Representation of the Spin O($N$) Model"
+- My bachelor's [[Bachelor_thesis_LG.pdf|thesis]] "Transizione di fase nei problemi K-SAT" (in italian)
 - Slides on [[Matroids_and_combinatorial_optimization.pdf|Matroids and combinatorial optimization]] based on chapter 12 of [Combinatorial Optimization](https://link.springer.com/book/10.1007/978-3-662-56039-6) by Korte and Vygen.
-- My bachelor's [[Bachelor_thesis_LG.pdf|thesis]] (in italian)
+
 
 
 ![[Pasted image 20231108162437.png|512]]   
