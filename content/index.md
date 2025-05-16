@@ -3,21 +3,16 @@ title: Home
 ---
 # Welcome
 
-Hi, I'm Lorenzo Gregoris, an applied math PhD student at [Eindhoven University of Technology](https://www.tue.nl/en/), previously at [Sapienza Università di Roma](https://www.uniroma1.it/en/pagina-strutturale/home). I work in topics like probability, statistical mechanics and algorithms.
-
-You can view my [CV](cv.pdf).
-
-## Office
-
-I work in the **Metaforum building, room MF 4.060**.
-
-## About me
 I'm an applied math PhD student at [Eindhoven University of Technology](https://www.tue.nl/en/). 
 Previously I was at [Sapienza università di Roma](https://www.uniroma1.it/en/pagina-strutturale/home).
 
 Interests: [[Probabilità|Probability]], [[Metodi matematici in Meccanica Statistica|Statistical Mechanics]], Algorithms and [[Deep Learning]].
 
 You can find my CV [here](cv.pdf).
+
+## Office
+
+I work in the **Metaforum building, room MF 4.060**.
 
 ## Contacts
 - **Email**: l dot gregoris at tue.nl
