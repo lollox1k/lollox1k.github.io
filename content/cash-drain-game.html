@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Drain Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .game-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .info-panel {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .info-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        .info-item strong {
+            color: #ffd700;
+        }
+
+        button {
+            background: linear-gradient(135deg, #444 0%, #666 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 600px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .leaderboard {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .leaderboard h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .tutorial {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .level-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .level-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-btn.active {
+            border-color: #ffd700;
+            background: rgba(255,215,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cash Drain Game</h1>
+        
+        <div class="tutorial">
+            <strong>How to Play:</strong> Click nodes to drain their cash to neighbors. Each drain costs points equal to the node's out-degree. 
+            Goal: Minimize the total absolute cash (L1 norm) within your budget!
+        </div>
+
+        <div class="game-area">
+            <div class="controls">
+                <div class="info-panel">
+                    <div class="info-item">
+                        <strong>Budget:</strong> <span id="budget">30</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>L1 Norm:</strong> <span id="l1norm">0</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Score:</strong> <span id="score">0</span>
+                    </div>
+                </div>
+                <div>
+                    <button onclick="showUserModal()">Change User</button>
+                    <button onclick="resetGame()">Reset Level</button>
+                    <button onclick="showLeaderboard()">Leaderboard</button>
+                </div>
+            </div>
+
+            <div class="level-select">
+                <div class="level-btn active" onclick="selectLevel(0)">Level 1 (3 nodes)</div>
+                <div class="level-btn" onclick="selectLevel(1)">Level 2 (8 nodes)</div>
+                <div class="level-btn" onclick="selectLevel(2)">Level 3 (16 nodes)</div>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to Cash Drain!</h2>
+            <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="20">
+            <button onclick="saveUsername()">Start Playing</button>
+        </div>
+    </div>
+
+    <div id="leaderboardModal" class="modal">
+        <div class="modal-content">
+            <h2>Leaderboard - Level <span id="leaderboardLevel">1</span></h2>
+            <div id="leaderboardList" class="leaderboard"></div>
+            <button onclick="closeLeaderboard()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let username = localStorage.getItem('cashDrainUsername') || '';
+        let currentLevel = 0;
+        let budget = 30;
+        let initialBudget = 30;
+        let nodes = [];
+        let edges = [];
+        let canvas, ctx;
+        let selectedNode = null;
+        let animationFrames = [];
+        let initialL1 = 0;
+
+        // Level Definitions
+        const levels = [
+            {
+                name: "Triangle Flow",
+                budget: 30,
+                nodes: [
+                    {id: 0, x: 0.5, y: 0.2, cash: 10},
+                    {id: 1, x: 0.3, y: 0.6, cash: -5},
+                    {id: 2, x: 0.7, y: 0.6, cash: -5}
+                ],
+                edges: [
+                    {from: 0, to: 1},
+                    {from: 0, to: 2},
+                    {from: 1, to: 2},
+                    {from: 2, to: 0},
+                    {from: 2, to: 1}
+                ]
+            },
+            {
+                name: "Octagonal Circuit",
+                budget: 50,
+                nodes: [
+                    {id: 0, x: 0.5, y: 0.1, cash: 6},
+                    {id: 1, x: 0.75, y: 0.2, cash: -2},
+                    {id: 2, x: 0.85, y: 0.45, cash: 3},
+                    {id: 3, x: 0.75, y: 0.7, cash: -1},
+                    {id: 4, x: 0.5, y: 0.8, cash: -4},
+                    {id: 5, x: 0.25, y: 0.7, cash: 2},
+                    {id: 6, x: 0.15, y: 0.45, cash: -3},
+                    {id: 7, x: 0.25, y: 0.2, cash: -1}
+                ],
+                edges: [
+                    // Main cycle for strong connectivity
+                    {from: 0, to: 1}, {from: 1, to: 2}, {from: 2, to: 3}, {from: 3, to: 4},
+                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 0},
+                    // Sparse additional edges
+                    {from: 0, to: 4}, {from: 2, to: 6}, {from: 5, to: 1}, {from: 3, to: 7}
+                ]
+            },
+            {
+                name: "Hexadecimal Web",
+                budget: 80,
+                nodes: [
+                    {id: 0, x: 0.5, y: 0.05, cash: 4},
+                    {id: 1, x: 0.65, y: 0.1, cash: -1},
+                    {id: 2, x: 0.75, y: 0.2, cash: 2},
+                    {id: 3, x: 0.8, y: 0.35, cash: -1},
+                    {id: 4, x: 0.8, y: 0.5, cash: -2},
+                    {id: 5, x: 0.75, y: 0.65, cash: 1},
+                    {id: 6, x: 0.65, y: 0.75, cash: -3},
+                    {id: 7, x: 0.5, y: 0.8, cash: 1},
+                    {id: 8, x: 0.35, y: 0.75, cash: -1},
+                    {id: 9, x: 0.25, y: 0.65, cash: 2},
+                    {id: 10, x: 0.2, y: 0.5, cash: -1},
+                    {id: 11, x: 0.2, y: 0.35, cash: -2},
+                    {id: 12, x: 0.25, y: 0.2, cash: 1},
+                    {id: 13, x: 0.35, y: 0.1, cash: -1},
+                    {id: 14, x: 0.45, y: 0.3, cash: 1},
+                    {id: 15, x: 0.55, y: 0.5, cash: 0}
+                ],
+                edges: [
+                    // Main cycle
+                    {from: 0, to: 1}, {from: 1, to: 2}, {from: 2, to: 3}, {from: 3, to: 4},
+                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 8},
+                    {from: 8, to: 9}, {from: 9, to: 10}, {from: 10, to: 11}, {from: 11, to: 12},
+                    {from: 12, to: 13}, {from: 13, to: 0},
+                    // Strategic sparse connections
+                    {from: 14, to: 15}, {from: 15, to: 14},
+                    {from: 0, to: 14}, {from: 14, to: 7},
+                    {from: 3, to: 15}, {from: 15, to: 10},
+                    {from: 5, to: 13}, {from: 12, to: 6}
+                ]
+            }
+        ];
+
+        // Initialize
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            if (!username) {
+                showUserModal();
+            } else {
+                initGame();
+            }
+            
+            canvas.addEventListener('click', handleCanvasClick);
+            canvas.addEventListener('mousemove', handleCanvasMove);
+        };
+
+        function initGame() {
+            const level = levels[currentLevel];
+            budget = level.budget;
+            initialBudget = level.budget;
+            
+            // Deep copy nodes
+            nodes = level.nodes.map(n => ({...n, cash: n.cash}));
+            edges = [...level.edges];
+            
+            // Calculate adjacency
+            nodes.forEach(node => {
+                node.outDegree = edges.filter(e => e.from === node.id).length;
+                node.outNeighbors = edges.filter(e => e.from === node.id).map(e => e.to);
+            });
+            
+            initialL1 = calculateL1();
+            updateDisplay();
+            draw();
+        }
+
+        function calculateL1() {
+            return nodes.reduce((sum, node) => sum + Math.abs(node.cash), 0);
+        }
+
+        function updateDisplay() {
+            document.getElementById('budget').textContent = budget;
+            document.getElementById('l1norm').textContent = calculateL1().toFixed(2);
+            
+            const reduction = initialL1 - calculateL1();
+            const efficiency = budget > 0 ? reduction / (initialBudget - budget) : 0;
+            const score = Math.round(reduction * 100 + efficiency * 50);
+            document.getElementById('score').textContent = score;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw edges
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 2;
+            edges.forEach(edge => {
+                const from = nodes[edge.from];
+                const to = nodes[edge.to];
+                const fx = from.x * canvas.width;
+                const fy = from.y * canvas.height;
+                const tx = to.x * canvas.width;
+                const ty = to.y * canvas.height;
+                
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                
+                // Draw arrow
+                const angle = Math.atan2(ty - fy, tx - fx);
+                const nodeRadius = currentLevel === 2 ? 25 : 30;
+                const arrowX = tx - nodeRadius * Math.cos(angle);
+                const arrowY = ty - nodeRadius * Math.sin(angle);
+                
+                ctx.lineTo(arrowX, arrowY);
+                ctx.stroke();
+                
+                // Arrowhead
+                ctx.save();
+                ctx.translate(arrowX, arrowY);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-10, -5);
+                ctx.lineTo(-10, 5);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fill();
+                ctx.restore();
+            });
+            
+            // Draw nodes
+            nodes.forEach(node => {
+                const x = node.x * canvas.width;
+                const y = node.y * canvas.height;
+                const radius = currentLevel === 2 ? 25 : 30;
+                
+                // Node circle
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                
+                if (node.cash > 0) {
+                    ctx.fillStyle = `rgba(76, 217, 100, ${0.3 + 0.7 * Math.min(node.cash / 20, 1)})`;
+                } else if (node.cash < 0) {
+                    ctx.fillStyle = `rgba(255, 69, 58, ${0.3 + 0.7 * Math.min(-node.cash / 20, 1)})`;
+                } else {
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                }
+                
+                ctx.fill();
+                ctx.strokeStyle = selectedNode === node ? '#ffd700' : 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = selectedNode === node ? 4 : 2;
+                ctx.stroke();
+                
+                // Cash value
+                ctx.fillStyle = '#fff';
+                ctx.font = currentLevel === 2 ? 'bold 14px Arial' : 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.cash.toFixed(1), x, y - 5);
+                
+                // Cost
+                ctx.font = currentLevel === 2 ? '10px Arial' : '12px Arial';
+                ctx.fillStyle = '#ffd700';
+                ctx.fillText(`cost: ${node.outDegree}`, x, y + 15);
+            });
+            
+            // Draw animations
+            animationFrames = animationFrames.filter(frame => {
+                frame.progress += 0.05;
+                if (frame.progress > 1) return false;
+                
+                ctx.save();
+                ctx.globalAlpha = 1 - frame.progress;
+                ctx.fillStyle = frame.amount > 0 ? '#4cd964' : '#ff453a';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                
+                const x = frame.x + frame.dx * frame.progress * 100;
+                const y = frame.y + frame.dy * frame.progress * 100 - frame.progress * 20;
+                
+                ctx.fillText(`${frame.amount > 0 ? '+' : ''}${frame.amount.toFixed(1)}`, x, y);
+                ctx.restore();
+                
+                return true;
+            });
+            
+            if (animationFrames.length > 0) {
+                requestAnimationFrame(draw);
+            }
+        }
+
+        function handleCanvasClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const radius = currentLevel === 2 ? 25 : 30;
+            
+            nodes.forEach(node => {
+                const nx = node.x * canvas.width;
+                const ny = node.y * canvas.height;
+                const dist = Math.sqrt((x - nx) ** 2 + (y - ny) ** 2);
+                
+                if (dist < radius) {
+                    drainNode(node);
+                }
+            });
+        }
+
+        function handleCanvasMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const radius = currentLevel === 2 ? 25 : 30;
+            
+            let hovering = false;
+            nodes.forEach(node => {
+                const nx = node.x * canvas.width;
+                const ny = node.y * canvas.height;
+                const dist = Math.sqrt((x - nx) ** 2 + (y - ny) ** 2);
+                
+                if (dist < radius) {
+                    selectedNode = node;
+                    hovering = true;
+                }
+            });
+            
+            if (!hovering) selectedNode = null;
+            canvas.style.cursor = hovering ? 'pointer' : 'default';
+            draw();
+        }
+
+        function drainNode(node) {
+            if (node.outDegree > budget || node.cash === 0) return;
+            
+            budget -= node.outDegree;
+            const cashPerNeighbor = node.cash / node.outDegree;
+            
+            // Animate cash flow
+            node.outNeighbors.forEach(neighborId => {
+                const neighbor = nodes.find(n => n.id === neighborId);
+                const fx = node.x * canvas.width;
+                const fy = node.y * canvas.height;
+                const tx = neighbor.x * canvas.width;
+                const ty = neighbor.y * canvas.height;
+                
+                const angle = Math.atan2(ty - fy, tx - fx);
+                animationFrames.push({
+                    x: fx,
+                    y: fy,
+                    dx: Math.cos(angle),
+                    dy: Math.sin(angle),
+                    amount: cashPerNeighbor,
+                    progress: 0
+                });
+                
+                neighbor.cash += cashPerNeighbor;
+            });
+            
+            node.cash = 0;
+            updateDisplay();
+            draw();
+            
+            // Check if game is complete
+            if (budget === 0 || calculateL1() === 0) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            const reduction = initialL1 - calculateL1();
+            const efficiency = reduction / (initialBudget - budget);
+            const score = Math.round(reduction * 100 + efficiency * 50);
+            
+            // Save to leaderboard
+            const leaderboardKey = `cashDrainLeaderboard_${currentLevel}`;
+            let leaderboard = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
+            leaderboard.push({
+                username: username,
+                score: score,
+                l1norm: calculateL1(),
+                date: new Date().toISOString()
+            });
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 10);
+            localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
+            
+            setTimeout(() => {
+                alert(`Game Complete!\nFinal L1 Norm: ${calculateL1().toFixed(2)}\nScore: ${score}`);
+            }, 500);
+        }
+
+        function resetGame() {
+            animationFrames = [];
+            initGame();
+        }
+
+        function selectLevel(level) {
+            currentLevel = level;
+            document.querySelectorAll('.level-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === level);
+            });
+            resetGame();
+        }
+
+        function showUserModal() {
+            document.getElementById('userModal').style.display = 'flex';
+            document.getElementById('usernameInput').value = username;
+        }
+
+        function saveUsername() {
+            const input = document.getElementById('usernameInput').value.trim();
+            if (input) {
+                username = input;
+                localStorage.setItem('cashDrainUsername', username);
+                document.getElementById('userModal').style.display = 'none';
+                initGame();
+            }
+        }
+
+        function showLeaderboard() {
+            const leaderboardKey = `cashDrainLeaderboard_${currentLevel}`;
+            const leaderboard = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
+            
+            document.getElementById('leaderboardLevel').textContent = currentLevel + 1;
+            
+            const listEl = document.getElementById('leaderboardList');
+            listEl.innerHTML = leaderboard.length === 0 
+                ? '<p>No scores yet! Be the first to complete this level.</p>'
+                : leaderboard.map((entry, i) => `
+                    <div class="leaderboard-entry">
+                        <span>${i + 1}. ${entry.username}</span>
+                        <span>Score: ${entry.score} (L1: ${entry.l1norm.toFixed(2)})</span>
+                    </div>
+                `).join('');
+            
+            document.getElementById('leaderboardModal').style.display = 'flex';
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('leaderboardModal').style.display = 'none';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.getElementById('userModal').style.display === 'flex') {
+                saveUsername();
+            }
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }
+            if (e.key === 'r' || e.key === 'R') {
+                resetGame();
+            }
+        });
+    </script>
+</body>
+</html>
