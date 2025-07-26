@@ -204,9 +204,6 @@
                     <div class="info-item">
                         <strong>L1 Norm:</strong> <span id="l1norm">0</span>
                     </div>
-                    <div class="info-item">
-                        <strong>Score:</strong> <span id="score">0</span>
-                    </div>
                 </div>
                 <div>
                     <button onclick="showUserModal()">Change User</button>
@@ -293,7 +290,7 @@
                     {from: 1, to: 0}, {from: 3, to: 0}, {from: 5, to: 0}, {from: 7, to: 0},
                     // Peripheral connections
                     {from: 1, to: 2}, {from: 2, to: 3}, {from: 3, to: 4}, 
-                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 1}
+                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 1}  // do instead 1 to 7, then by theorem node 0 is  a perfect sink!
                 ]
             },
             {
@@ -402,12 +399,8 @@
 
         function updateDisplay() {
             document.getElementById('budget').textContent = budget;
-            document.getElementById('l1norm').textContent = calculateL1().toFixed(2);
-            
-            const reduction = initialL1 - calculateL1();
-            const efficiency = budget > 0 ? reduction / (initialBudget - budget) : 0;
-            const score = Math.round(reduction * 100 + efficiency * 50);
-            document.getElementById('score').textContent = score;
+            const decimalPlaces = calculateL1() === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(calculateL1()))));
+            document.getElementById('l1norm').textContent = calculateL1().toFixed(decimalPlaces);  
         }
 
         function draw() {
@@ -497,7 +490,9 @@
                 ctx.font = currentLevel === 2 ? 'bold 14px Arial' : 'bold 16px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(node.cash.toFixed(1), x, y - 5);
+                // Calculate decimal places using a formula. Handles 0 as a special case.
+                const decimalPlaces = node.cash === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(node.cash))));
+                ctx.fillText(node.cash.toFixed(decimalPlaces), x, y - 5);
                 
                 // Cost
                 ctx.font = currentLevel === 2 ? '10px Arial' : '12px Arial';
@@ -519,7 +514,8 @@
                 const x = frame.x + frame.dx * frame.progress * 100;
                 const y = frame.y + frame.dy * frame.progress * 100 - frame.progress * 20;
                 
-                ctx.fillText(`${frame.amount > 0 ? '+' : ''}${frame.amount.toFixed(1)}`, x, y);
+                const decimalPlaces = frame.amount === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(frame.amount))));
+                ctx.fillText(`${frame.amount > 0 ? '+' : ''}${frame.amount.toFixed(decimalPlaces)}`, x, y);
                 ctx.restore();
                 
                 return true;
@@ -626,7 +622,8 @@
             localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
             
             setTimeout(() => {
-                alert(`Game Complete!\nFinal L1 Norm: ${calculateL1().toFixed(2)}\nScore: ${score}`);
+                const decimalPlaces = calculateL1() === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(calculateL1()))));
+                alert(`Game Complete!\nFinal L1 Norm: ${calculateL1().toFixed(decimalPlaces)}`);
             }, 500);
         }
 
@@ -674,7 +671,7 @@
                 : leaderboard.map((entry, i) => `
                     <div class="leaderboard-entry">
                         <span>${i + 1}. ${entry.username}</span>
-                        <span>Score: ${entry.score} (L1: ${entry.l1norm.toFixed(2)})</span>
+                        <span>Score: ${entry.score} (L1: ${entry.l1norm.toFixed(4)})</span>
                     </div>
                 `).join('');
             
