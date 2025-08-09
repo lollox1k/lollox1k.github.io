@@ -1,3 +1,5 @@
+# WIP
+
 Consider the following problem on a directed graph:
 
 % explain the problem
@@ -30,8 +32,9 @@ Actually, this is a characterization of isntances where we can finish always in 
 - G has at least a perfect sink
 - Any cash configuration on G can reach zero cash in finite steps
 
-For what we said, it's easy to convince that with a perfect sink we can always find a strategy that fully drains the cash in a finite number of steps. For the converse, the crucial observation is that if we don't have a perfect sink, then we must have two disjoint cycles. But cycles acts as a "trap" for cash: say that a cycles contains only positive cash. Then no matter what happens, by updating nodes of the cycles, you cannot push away all the cash. A tiny, vanishing fraction will always reamin trapped in there. Then, if we initialzie the cash putting all positive in a cycle, and all negative in another disjoint cycle, you can never obtain a full cancellation.
+For what we said, it's easy to convince that with a perfect sink we can always find a strategy that fully drains the cash in a finite number of steps. For the converse, the crucial observation is that if we don't have a perfect sink, then for every node $x \in V$, we can find a cycle $C$ such that $x \notin C$. But cycles acts as a "trap" for cash: say that a cycles contains only positive cash. Then no matter what happens, by updating nodes of the cycles, you cannot push away all the cash. A tiny, vanishing fraction will always reamin trapped in there. Then, if we initialzie the cash putting all positive in a cycle, and all negative in another disjoint cycle, you can never obtain a full cancellation. !FIX!
 
 Having a perfect sink is an easy thing to check. But unfortunately, a very rare thing to observe, at least in for big graphs.
 
-But given a initial cash distribution, can we easily say if there exists a sequence that drain the cash in finite time? In the example without perfect sink, this is indeed the case: the genetic algorithm found it! [1, 4, 7, 4, 5, 4, 6, 4, 6, 7, 4, 1, 0, 7, 7, 6, 7, 2, 1, 6, 2, 6, 2, 3, 0, 4] (remove zero cash moves)
+But given a initial cash distribution, can we easily say if there exists a sequence that drain the cash in finite time? In the example without perfect sink, this is indeed the case: the genetic algorithm found it! [1, 4, 7, 4, 5, 4, 6, 4, 6, 7, 4, 1, 0, 7, 7, 6, 7, 2, 1, 6, 2, 6, 2, 3, 0, 4] (remove zero cash moves). 
+
