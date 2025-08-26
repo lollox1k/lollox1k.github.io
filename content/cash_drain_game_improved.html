@@ -88,6 +88,19 @@
             transform: none;
         }
 
+        .game-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .game-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
         #gameCanvas {
             width: 100%;
             height: 600px;
@@ -95,6 +108,51 @@
             border-radius: 15px;
             cursor: pointer;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .graph-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .graph-title {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        #graphCanvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .graph-stats {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .stat-label {
+            color: #aaa;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-weight: bold;
         }
 
         .modal {
@@ -192,7 +250,7 @@
         <div class="tutorial">
             <strong>How to Play:</strong> Click nodes to drain their cash to neighbors. Each drain costs points equal to the node's out-degree. 
             Hover over nodes to see where their cash will flow. 
-            Goal: Minimize the total absolute cash (L1 norm) within your budget!
+            Goal: Minimize the total absolute cash (L1 norm) within your budget! The graph shows your progress.
         </div>
 
         <div class="game-area">
@@ -218,7 +276,31 @@
                 <div class="level-btn" onclick="selectLevel(2)">Level 3</div>
             </div>
 
-            <canvas id="gameCanvas"></canvas>
+            <div class="game-content">
+                <canvas id="gameCanvas"></canvas>
+                <div class="graph-container">
+                    <div class="graph-title">L1 Norm vs Cost Used</div>
+                    <canvas id="graphCanvas"></canvas>
+                    <div class="graph-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Initial L1:</span>
+                            <span class="stat-value" id="initialL1Stat">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Reduction:</span>
+                            <span class="stat-value" id="reductionStat">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Efficiency:</span>
+                            <span class="stat-value" id="efficiencyStat">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Moves:</span>
+                            <span class="stat-value" id="movesStat">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -247,9 +329,14 @@
         let nodes = [];
         let edges = [];
         let canvas, ctx;
+        let graphCanvas, graphCtx;
         let selectedNode = null;
         let animationFrames = [];
         let initialL1 = 0;
+        
+        // Graph tracking
+        let gameHistory = [];
+        let moves = 0;
 
         // Level Definitions
         const levels = [
@@ -273,33 +360,30 @@
                 name: "Hub and Spokes",
                 budget: 50,
                 nodes: [
-                    {id: 0, x: 0.5, y: 0.4, cash: -7}, //30
-                    {id: 1, x: 0.5, y: 0.1, cash: 0}, //-17 
-                    {id: 2, x: 0.75, y: 0.2, cash: 0}, //12
-                    {id: 3, x: 0.85, y: 0.45, cash: 7}, //-8
-                    {id: 4, x: 0.75, y: 0.7, cash: 0}, //8
-                    {id: 5, x: 0.5, y: 0.8, cash: 0},//-10
-                    {id: 6, x: 0.25, y: 0.7, cash: 0},//-15
-                    {id: 7, x: 0.15, y: 0.45, cash: 0} //0
+                    {id: 0, x: 0.5, y: 0.4, cash: -7},
+                    {id: 1, x: 0.5, y: 0.1, cash: 0},
+                    {id: 2, x: 0.75, y: 0.2, cash: 0},
+                    {id: 3, x: 0.85, y: 0.45, cash: 7},
+                    {id: 4, x: 0.75, y: 0.7, cash: 0},
+                    {id: 5, x: 0.5, y: 0.8, cash: 0},
+                    {id: 6, x: 0.25, y: 0.7, cash: 0},
+                    {id: 7, x: 0.15, y: 0.45, cash: 0}
                 ],
                 edges: [
-                    // Hub connections (node 0 is the hub)
                     {from: 0, to: 1}, {from: 0, to: 2}, {from: 0, to: 3}, {from: 0, to: 4}, 
                     {from: 0, to: 5}, {from: 0, to: 6}, {from: 0, to: 7},
-                    // Return paths to maintain strong connectivity
                     {from: 1, to: 0}, {from: 3, to: 0}, {from: 5, to: 0}, {from: 7, to: 0},
-                    // Peripheral connections
                     {from: 1, to: 2}, {from: 2, to: 3}, {from: 3, to: 4}, 
-                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 1}  // do instead 1 to 7, then by theorem node 0 is  a perfect sink!
+                    {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 1}
                 ]
             },
             {
                 name: "Power Law Network", 
                 budget: 100,
                 nodes: [
-                    {id: 0, x: 0.5, y: 0.45, cash: 7},  // Major hub  (10 + 15 + 8 + 5 + 10 + 7 + 12 + 1) = (20 + 10 + 12 + 15 + 8 + 10 + 5 + 8)
-                    {id: 1, x: 0.3, y: 0.25, cash: -15}, // Secondary hub
-                    {id: 2, x: 0.7, y: 0.25, cash: 12},  // Secondary hub
+                    {id: 0, x: 0.5, y: 0.45, cash: 7},
+                    {id: 1, x: 0.3, y: 0.25, cash: -15},
+                    {id: 2, x: 0.7, y: 0.25, cash: 12},
                     {id: 3, x: 0.5, y: 0.1, cash: -6},
                     {id: 4, x: 0.8, y: 0.15, cash: 5},
                     {id: 5, x: 0.85, y: 0.35, cash: -7},
@@ -315,17 +399,12 @@
                     {id: 15, x: 0.65, y: 0.5, cash: 1}
                 ],
                 edges: [
-                    // Major hub (0) connections - high degree
                     {from: 0, to: 1}, {from: 0, to: 2}, {from: 0, to: 3}, {from: 0, to: 8}, 
                     {from: 0, to: 9}, {from: 0, to: 14}, {from: 0, to: 15}, {from: 0, to: 7},
-                    // Secondary hub (1) connections
                     {from: 1, to: 3}, {from: 1, to: 10}, {from: 1, to: 12}, {from: 1, to: 13}, {from: 1, to: 14},
-                    // Secondary hub (2) connections  
                     {from: 2, to: 4}, {from: 2, to: 5}, {from: 2, to: 6}, {from: 2, to: 15}, {from: 2, to: 7},
-                    // Return paths for strong connectivity
                     {from: 3, to: 0}, {from: 8, to: 0}, {from: 14, to: 0}, {from: 15, to: 0},
                     {from: 10, to: 1}, {from: 12, to: 1}, {from: 5, to: 2}, {from: 6, to: 2},
-                    // Peripheral connections
                     {from: 4, to: 5}, {from: 5, to: 6}, {from: 6, to: 7}, {from: 7, to: 8},
                     {from: 9, to: 10}, {from: 10, to: 11}, {from: 11, to: 12}, {from: 13, to: 4},
                     {from: 7, to: 15}, {from: 9, to: 14}, {from: 11, to: 14}, {from: 12, to: 13}
@@ -337,12 +416,18 @@
         window.addEventListener('DOMContentLoaded', function() {
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
+            graphCanvas = document.getElementById('graphCanvas');
+            graphCtx = graphCanvas.getContext('2d');
             
-            // Ensure canvas is properly sized
+            // Ensure canvases are properly sized
             function resizeCanvas() {
                 if (canvas && canvas.offsetWidth > 0) {
                     canvas.width = canvas.offsetWidth;
                     canvas.height = canvas.offsetHeight;
+                }
+                if (graphCanvas && graphCanvas.offsetWidth > 0) {
+                    graphCanvas.width = graphCanvas.offsetWidth;
+                    graphCanvas.height = graphCanvas.offsetHeight;
                 }
             }
             
@@ -356,7 +441,10 @@
             // Handle window resize
             window.addEventListener('resize', function() {
                 resizeCanvas();
-                if (nodes.length > 0) draw();
+                if (nodes.length > 0) {
+                    draw();
+                    drawGraph();
+                }
             });
             
             // Initialize game
@@ -368,10 +456,14 @@
         });
 
         function initGame() {
-            // Ensure canvas is properly sized
+            // Ensure canvases are properly sized
             if (canvas && canvas.offsetWidth > 0) {
                 canvas.width = canvas.offsetWidth;
                 canvas.height = canvas.offsetHeight;
+            }
+            if (graphCanvas && graphCanvas.offsetWidth > 0) {
+                graphCanvas.width = graphCanvas.offsetWidth;
+                graphCanvas.height = graphCanvas.offsetHeight;
             }
             
             const level = levels[currentLevel];
@@ -389,8 +481,15 @@
             });
             
             initialL1 = calculateL1();
+            
+            // Reset graph tracking
+            gameHistory = [{cost: 0, l1: initialL1}];
+            moves = 0;
+            
             updateDisplay();
+            updateStats();
             draw();
+            drawGraph();
         }
 
         function calculateL1() {
@@ -403,8 +502,159 @@
             document.getElementById('l1norm').textContent = calculateL1().toFixed(decimalPlaces);  
         }
 
+        function updateStats() {
+            const currentL1 = calculateL1();
+            const reduction = initialL1 - currentL1;
+            const costUsed = initialBudget - budget;
+            const efficiency = costUsed > 0 ? reduction / costUsed : 0;
+            
+            document.getElementById('initialL1Stat').textContent = initialL1.toFixed(2);
+            document.getElementById('reductionStat').textContent = reduction.toFixed(2);
+            document.getElementById('efficiencyStat').textContent = efficiency.toFixed(2);
+            document.getElementById('movesStat').textContent = moves;
+        }
+
+        function drawGraph() {
+            if (!graphCtx || !gameHistory || gameHistory.length === 0) return;
+            
+            const width = graphCanvas.width;
+            const height = graphCanvas.height;
+            const padding = 40;
+            const graphWidth = width - 2 * padding;
+            const graphHeight = height - 2 * padding;
+            
+            // Clear canvas
+            graphCtx.clearRect(0, 0, width, height);
+            
+            // Calculate bounds
+            const maxCost = initialBudget;
+            const maxL1 = initialL1;
+            
+            // Draw grid lines
+            graphCtx.strokeStyle = 'rgba(255,255,255,0.1)';
+            graphCtx.lineWidth = 1;
+            
+            // Vertical grid lines (cost)
+            for (let i = 0; i <= 5; i++) {
+                const x = padding + (i / 5) * graphWidth;
+                graphCtx.beginPath();
+                graphCtx.moveTo(x, padding);
+                graphCtx.lineTo(x, height - padding);
+                graphCtx.stroke();
+            }
+            
+            // Horizontal grid lines (L1)
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (i / 5) * graphHeight;
+                graphCtx.beginPath();
+                graphCtx.moveTo(padding, y);
+                graphCtx.lineTo(width - padding, y);
+                graphCtx.stroke();
+            }
+            
+            // Draw axes
+            graphCtx.strokeStyle = 'rgba(255,255,255,0.5)';
+            graphCtx.lineWidth = 2;
+            
+            // Y-axis
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, padding);
+            graphCtx.lineTo(padding, height - padding);
+            graphCtx.stroke();
+            
+            // X-axis
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, height - padding);
+            graphCtx.lineTo(width - padding, height - padding);
+            graphCtx.stroke();
+            
+            // Draw labels
+            graphCtx.fillStyle = '#fff';
+            graphCtx.font = '12px Arial';
+            graphCtx.textAlign = 'center';
+            graphCtx.textBaseline = 'top';
+            
+            // X-axis labels (cost)
+            for (let i = 0; i <= 5; i++) {
+                const x = padding + (i / 5) * graphWidth;
+                const value = (i / 5) * maxCost;
+                graphCtx.fillText(value.toFixed(0), x, height - padding + 5);
+            }
+            
+            // Y-axis labels (L1)
+            graphCtx.textAlign = 'right';
+            graphCtx.textBaseline = 'middle';
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (1 - i / 5) * graphHeight;
+                const value = (i / 5) * maxL1;
+                graphCtx.fillText(value.toFixed(0), padding - 5, y);
+            }
+            
+            // Draw axis titles
+            graphCtx.font = '14px Arial';
+            graphCtx.fillStyle = '#ffd700';
+            graphCtx.textAlign = 'center';
+            graphCtx.textBaseline = 'top';
+            graphCtx.fillText('Cost Used', width / 2, height - 15);
+            
+            // Y-axis title (rotated)
+            graphCtx.save();
+            graphCtx.translate(15, height / 2);
+            graphCtx.rotate(-Math.PI / 2);
+            graphCtx.textBaseline = 'middle';
+            graphCtx.fillText('L1 Norm', 0, 0);
+            graphCtx.restore();
+            
+            // Draw the line graph
+            if (gameHistory.length > 1) {
+                // Draw line
+                graphCtx.strokeStyle = '#4cd964';
+                graphCtx.lineWidth = 3;
+                graphCtx.beginPath();
+                
+                gameHistory.forEach((point, i) => {
+                    const x = padding + (point.cost / maxCost) * graphWidth;
+                    const y = padding + (1 - point.l1 / maxL1) * graphHeight;
+                    
+                    if (i === 0) {
+                        graphCtx.moveTo(x, y);
+                    } else {
+                        graphCtx.lineTo(x, y);
+                    }
+                });
+                
+                graphCtx.stroke();
+                
+                // Draw points
+                gameHistory.forEach((point, i) => {
+                    const x = padding + (point.cost / maxCost) * graphWidth;
+                    const y = padding + (1 - point.l1 / maxL1) * graphHeight;
+                    
+                    graphCtx.beginPath();
+                    graphCtx.arc(x, y, i === gameHistory.length - 1 ? 6 : 4, 0, Math.PI * 2);
+                    graphCtx.fillStyle = i === gameHistory.length - 1 ? '#ffd700' : '#4cd964';
+                    graphCtx.fill();
+                    graphCtx.strokeStyle = 'rgba(255,255,255,0.8)';
+                    graphCtx.lineWidth = 2;
+                    graphCtx.stroke();
+                });
+            } else {
+                // Just draw the starting point
+                const x = padding;
+                const y = padding + (1 - initialL1 / maxL1) * graphHeight;
+                
+                graphCtx.beginPath();
+                graphCtx.arc(x, y, 6, 0, Math.PI * 2);
+                graphCtx.fillStyle = '#ffd700';
+                graphCtx.fill();
+                graphCtx.strokeStyle = 'rgba(255,255,255,0.8)';
+                graphCtx.lineWidth = 2;
+                graphCtx.stroke();
+            }
+        }
+
         function draw() {
-            if (!ctx || !nodes || nodes.length === 0) return;  // Guard against null context or empty nodes
+            if (!ctx || !nodes || nodes.length === 0) return;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -490,7 +740,6 @@
                 ctx.font = currentLevel === 2 ? 'bold 14px Arial' : 'bold 16px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                // Calculate decimal places using a formula. Handles 0 as a special case.
                 const decimalPlaces = node.cash === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(node.cash))));
                 ctx.fillText(node.cash.toFixed(decimalPlaces), x, y - 5);
                 
@@ -594,8 +843,17 @@
             });
             
             node.cash = 0;
+            moves++;
+            
+            // Add to history
+            const costUsed = initialBudget - budget;
+            const currentL1 = calculateL1();
+            gameHistory.push({cost: costUsed, l1: currentL1});
+            
             updateDisplay();
+            updateStats();
             draw();
+            drawGraph();
             
             // Check if game is complete
             if (budget === 0 || calculateL1() === 0) {
@@ -615,6 +873,7 @@
                 username: username,
                 score: score,
                 l1norm: calculateL1(),
+                moves: moves,
                 date: new Date().toISOString()
             });
             leaderboard.sort((a, b) => b.score - a.score);
@@ -623,7 +882,7 @@
             
             setTimeout(() => {
                 const decimalPlaces = calculateL1() === 0 ? 1 : Math.max(1, 2 - Math.floor(Math.log10(Math.abs(calculateL1()))));
-                alert(`Game Complete!\nFinal L1 Norm: ${calculateL1().toFixed(decimalPlaces)}`);
+                alert(`Game Complete!\nFinal L1 Norm: ${calculateL1().toFixed(decimalPlaces)}\nMoves: ${moves}\nScore: ${score}`);
             }, 500);
         }
 
@@ -644,7 +903,7 @@
             document.getElementById('userModal').style.display = 'flex';
             const input = document.getElementById('usernameInput');
             input.value = username || '';
-            setTimeout(() => input.focus(), 100); // Small delay to ensure modal is visible
+            setTimeout(() => input.focus(), 100);
         }
 
         function saveUsername() {
@@ -653,7 +912,7 @@
                 username = input;
                 localStorage.setItem('cashDrainUsername', username);
                 document.getElementById('userModal').style.display = 'none';
-                if (!nodes.length) {  // Only init if game hasn't started yet
+                if (!nodes.length) {
                     initGame();
                 }
             }
@@ -671,7 +930,7 @@
                 : leaderboard.map((entry, i) => `
                     <div class="leaderboard-entry">
                         <span>${i + 1}. ${entry.username}</span>
-                        <span>Score: ${entry.score} (L1: ${entry.l1norm.toFixed(4)})</span>
+                        <span>Score: ${entry.score} (L1: ${entry.l1norm.toFixed(2)}, Moves: ${entry.moves || 'N/A'})</span>
                     </div>
                 `).join('');
             

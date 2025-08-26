@@ -1,4 +1,4 @@
-![[cash-drain-game.html|Cash Drain Game]]
+![[cash_drain_game_improved.html|Cash Drain Game]]
 
 ![[traffic_curve_cropped.gif|right]]   
 
