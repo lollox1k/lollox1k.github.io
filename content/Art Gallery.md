@@ -1,3 +1,9 @@
+> Bisogna inventare nuove tecniche — che siano irriconoscibili — che  
+> non assomiglino a nessuna operazione precedente. Per evitare così la  
+> puerilità e il ridicolo. Costruirsi un mondo proprio, con cui non siano  
+> possibili confronti. Per cui non esistano precedenti misure di giudizio.
+
+
 ![[cash_drain_game_improved.html|Cash Drain Game]]
 
 ![[traffic_curve_cropped.gif|right]]   
