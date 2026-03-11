@@ -4,7 +4,7 @@
 > possibili confronti. Per cui non esistano precedenti misure di giudizio.
 
 
-![[cash_drain_game_improved.html|Cash Drain Game]]
+![[cash_drain_game.html|Cash Drain Game]]
 
 ![[traffic_curve_cropped.gif|right]]   
 
