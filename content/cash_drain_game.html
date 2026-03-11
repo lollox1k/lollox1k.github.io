@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Cash Drain Game</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
@@ -12,30 +12,37 @@
     font-family:'JetBrains Mono','SF Mono','Fira Code',monospace;
     color:#e2e8f0;min-height:100vh;
     display:flex;flex-direction:column;align-items:center;
-    padding:24px 16px;
+    padding:20px 12px;
+    -webkit-tap-highlight-color:transparent;
   }
   h1{
-    font-size:26px;font-weight:700;letter-spacing:.1em;
+    font-size:24px;font-weight:700;letter-spacing:.1em;
     background:linear-gradient(135deg,#f97316,#ef4444,#3b82f6);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   }
-  .subtitle{font-size:11px;color:#64748b;margin:4px 0 14px;letter-spacing:.04em}
-  .levels{display:flex;gap:8px;margin-bottom:16px}
+  .subtitle{font-size:11px;color:#64748b;margin:4px 0 12px;letter-spacing:.04em}
+  .levels{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;justify-content:center}
   .level-btn{
     font-family:inherit;font-size:11px;letter-spacing:.04em;
-    padding:6px 16px;border-radius:8px;cursor:pointer;
+    padding:6px 14px;border-radius:8px;cursor:pointer;
     transition:all .2s;border:1.5px solid #1e293b;
     background:transparent;color:#64748b;
   }
   .level-btn.active{border-color:#fbbf24;background:rgba(251,191,36,.1);color:#fbbf24}
   .level-btn:hover:not(.active){border-color:#334155;color:#94a3b8}
-  .main{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+
+  /* ── Desktop: side-by-side ── */
+  .main{display:flex;gap:16px;align-items:flex-start;justify-content:center;width:100%;max-width:920px}
+
+  .graph-wrap{position:relative;flex:0 0 auto}
   .graph-svg{
-    border-radius:14px;border:1px solid #1e293b;
+    display:block;border-radius:14px;border:1px solid #1e293b;
     background:radial-gradient(ellipse at center,#111827 0%,#0c0f1a 70%);
-    max-width:100%;cursor:default;
+    touch-action:none; /* prevent scroll/zoom on SVG */
+    -webkit-user-select:none;user-select:none;
   }
-  .panel{width:280px;display:flex;flex-direction:column;gap:10px}
+
+  .panel{width:280px;display:flex;flex-direction:column;gap:10px;flex-shrink:0}
   .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .stat-card{
     background:rgba(255,255,255,.03);border:1px solid #1e293b;
@@ -61,48 +68,69 @@
   .reset-btn:hover{border-color:#475569;color:#e2e8f0}
   .legend{display:flex;gap:16px;justify-content:center;font-size:10px;color:#64748b}
   .legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
-  .banner{margin-top:16px;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;letter-spacing:.05em;text-align:center}
+  .banner{margin-top:14px;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;letter-spacing:.05em;text-align:center}
   .banner-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e}
   .banner-fail{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444}
   .banner.hidden{display:none}
+
+  /* ── Mobile: stack vertically ── */
+  @media(max-width:919px){
+    body{padding:16px 8px}
+    h1{font-size:20px}
+    .main{flex-direction:column;align-items:center}
+    .graph-svg{width:100%;height:auto}
+    .panel{width:100%;max-width:600px}
+    .stats-grid{grid-template-columns:1fr 1fr 1fr 1fr}
+    .stat-card{padding:8px 6px}
+    .stat-value{font-size:16px}
+    .stat-label{font-size:8px}
+    .chart-box{display:flex;flex-direction:column;align-items:center}
+    #chartSvg{max-width:100%}
+  }
+  @media(max-width:480px){
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .stat-value{font-size:18px}
+    .level-btn{padding:5px 10px;font-size:10px}
+  }
 </style>
 </head>
 <body>
 
 <h1>CASH DRAIN GAME</h1>
-<p class="subtitle">click nodes to fire · drain all cash within budget</p>
-
+<p class="subtitle">tap nodes to fire · drain all cash within budget</p>
 <div class="levels" id="levelBtns"></div>
 
 <div class="main">
-  <svg class="graph-svg" id="graphSvg" width="600" height="530" viewBox="0 0 600 530">
-    <defs>
-      <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
-        <path d="M0,0 L7,2.5 L0,5Z" fill="#334155"/>
-      </marker>
-      <marker id="arr-hl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
-        <path d="M0,0 L7,2.5 L0,5Z" fill="#fbbf24"/>
-      </marker>
-      <filter id="gl-p" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="5" result="b"/>
-        <feFlood flood-color="#f97316" flood-opacity="0.5"/><feComposite in2="b" operator="in"/>
-        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="gl-n" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="5" result="b"/>
-        <feFlood flood-color="#3b82f6" flood-opacity="0.5"/><feComposite in2="b" operator="in"/>
-        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="gl-f" x="-80%" y="-80%" width="260%" height="260%">
-        <feGaussianBlur stdDeviation="12" result="b"/>
-        <feFlood flood-color="#fff" flood-opacity="0.35"/><feComposite in2="b" operator="in"/>
-        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>
-    <g id="edgesLayer"></g>
-    <g id="particlesLayer"></g>
-    <g id="nodesLayer"></g>
-  </svg>
+  <div class="graph-wrap">
+    <svg class="graph-svg" id="graphSvg" width="600" height="530" viewBox="0 0 600 530">
+      <defs>
+        <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <path d="M0,0 L7,2.5 L0,5Z" fill="#334155"/>
+        </marker>
+        <marker id="arr-hl" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <path d="M0,0 L7,2.5 L0,5Z" fill="#fbbf24"/>
+        </marker>
+        <filter id="gl-p" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feFlood flood-color="#f97316" flood-opacity="0.5"/><feComposite in2="b" operator="in"/>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="gl-n" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feFlood flood-color="#3b82f6" flood-opacity="0.5"/><feComposite in2="b" operator="in"/>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="gl-f" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="12" result="b"/>
+          <feFlood flood-color="#fff" flood-opacity="0.35"/><feComposite in2="b" operator="in"/>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="edgesLayer"></g>
+      <g id="particlesLayer"></g>
+      <g id="nodesLayer"></g>
+    </svg>
+  </div>
 
   <div class="panel">
     <div class="stats-grid">
@@ -142,14 +170,10 @@ const LEVELS = [
   {
     name:"Hub & Spokes", budget:50,
     nodes:[
-      {id:0,x:300,y:250,cash:15},
-      {id:1,x:300,y:70,cash:-8},
-      {id:2,x:470,y:120,cash:6},
-      {id:3,x:530,y:270,cash:-12},
-      {id:4,x:460,y:410,cash:9},
-      {id:5,x:300,y:460,cash:-5},
-      {id:6,x:140,y:410,cash:3},
-      {id:7,x:80,y:270,cash:-8}
+      {id:0,x:300,y:250,cash:15},{id:1,x:300,y:70,cash:-8},
+      {id:2,x:470,y:120,cash:6},{id:3,x:530,y:270,cash:-12},
+      {id:4,x:460,y:410,cash:9},{id:5,x:300,y:460,cash:-5},
+      {id:6,x:140,y:410,cash:3},{id:7,x:80,y:270,cash:-8}
     ],
     edges:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[1,0],[3,0],[5,0],[7,0],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,1]]
   },
@@ -177,26 +201,20 @@ const LEVELS = [
 ];
 
 // ─── State ───────────────────────────────────────────────────────
-let levelIdx = 0;
-let cash = [];
-let budget = 0;
-let moves = 0;
-let history = [];
-let outAdj = [];
-let hoveredNode = -1;
-let firedNodeId = -1;
-let firedTimer = null;
-let animFrame = null;
-
+let levelIdx = 0, cash = [], budget = 0, moves = 0, history = [], outAdj = [];
+let hoveredNode = -1, firedNodeId = -1, firedTimer = null, animFrame = null;
 const SVG_NS = "http://www.w3.org/2000/svg";
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
 // ─── Helpers ─────────────────────────────────────────────────────
-function lv(){ return LEVELS[levelIdx]; }
+function L(){ return LEVELS[levelIdx]; }
 function getL1(){ return cash.reduce((s,v)=>s+Math.abs(v),0); }
-function getInitialL1(){ return lv().nodes.reduce((s,n)=>s+Math.abs(n.cash),0); }
-function getCostUsed(){ return lv().budget - budget; }
-function getBaseR(){ return lv().nodes.length > 10 ? 19 : 26; }
-function isSmall(){ return lv().nodes.length > 10; }
+function getInitialL1(){ return L().nodes.reduce((s,n)=>s+Math.abs(n.cash),0); }
+function getCostUsed(){ return L().budget - budget; }
+function getBaseR(){ return L().nodes.length > 10 ? 19 : 26; }
+function small(){ return L().nodes.length > 10; }
+// bigger hit target on touch
+function hitR(){ return getBaseR() + (isTouch ? 10 : 4); }
 
 function cashColor(v){
   const t = Math.min(Math.abs(v)*0.04,1);
@@ -205,9 +223,9 @@ function cashColor(v){
   return `rgba(59,130,246,${(.35+.65*t).toFixed(3)})`;
 }
 
-function buildOutAdj(level){
-  const a = level.nodes.map(()=>[]);
-  level.edges.forEach(([f,t])=>a[f].push(t));
+function buildOutAdj(lev){
+  const a = lev.nodes.map(()=>[]);
+  lev.edges.forEach(([f,t])=>a[f].push(t));
   return a;
 }
 
@@ -222,212 +240,192 @@ function svgEl(tag, attrs){
 
 function clearEl(el){ while(el.firstChild) el.removeChild(el.firstChild); }
 
-// ─── Hit-test: find node under SVG coordinates ──────────────────
-function hitTestNode(svgX, svgY){
-  const baseR = getBaseR();
-  const nodes = lv().nodes;
-  // check in reverse so topmost (last-rendered) wins
-  for(let i = nodes.length - 1; i >= 0; i--){
+// ─── Coordinate mapping: screen → SVG viewBox ───────────────────
+function svgPoint(clientX, clientY){
+  const svg = document.getElementById('graphSvg');
+  const pt = svg.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+  const ctm = svg.getScreenCTM();
+  if(!ctm) return {x:0,y:0};
+  const svgPt = pt.matrixTransform(ctm.inverse());
+  return {x: svgPt.x, y: svgPt.y};
+}
+
+// ─── Hit-test ────────────────────────────────────────────────────
+function hitTestNode(sx, sy){
+  const r = hitR();
+  const nodes = L().nodes;
+  let best = -1, bestD = Infinity;
+  for(let i = 0; i < nodes.length; i++){
     const n = nodes[i];
-    const dx = svgX - n.x, dy = svgY - n.y;
-    if(dx*dx + dy*dy <= (baseR+4)*(baseR+4)) return n.id;
+    const d = (sx-n.x)**2 + (sy-n.y)**2;
+    if(d <= r*r && d < bestD){ best = n.id; bestD = d; }
   }
-  return -1;
+  return best;
 }
 
-function svgCoords(e){
-  const svg = document.getElementById('graphSvg');
-  const rect = svg.getBoundingClientRect();
-  // map screen coords → viewBox coords
-  const scaleX = 600 / rect.width;
-  const scaleY = 530 / rect.height;
-  return {
-    x: (e.clientX - rect.left) * scaleX,
-    y: (e.clientY - rect.top) * scaleY
-  };
+function canFireNode(id){
+  const l1 = getL1();
+  if(l1 < 0.01 || budget <= 0) return false;
+  const deg = outAdj[id].length;
+  return deg > 0 && deg <= budget && Math.abs(cash[id]) >= .001;
 }
 
-// ─── SVG-level mouse handlers ────────────────────────────────────
-function setupSvgEvents(){
+// ─── SVG event handlers ─────────────────────────────────────────
+function setupEvents(){
   const svg = document.getElementById('graphSvg');
 
+  // ── Mouse (desktop) ──
   svg.addEventListener('mousemove', e => {
-    const {x,y} = svgCoords(e);
-    const hit = hitTestNode(x, y);
+    const {x,y} = svgPoint(e.clientX, e.clientY);
+    const hit = hitTestNode(x,y);
     if(hit !== hoveredNode){
       hoveredNode = hit;
-      drawEdges();
-      drawNodes();
-      // update cursor
-      const l1 = getL1();
-      const gameOver = l1 < 0.01 || budget <= 0;
-      if(hit >= 0 && !gameOver){
-        const deg = outAdj[hit].length;
-        const val = cash[hit];
-        svg.style.cursor = (deg > 0 && deg <= budget && Math.abs(val) >= .001) ? 'pointer' : 'default';
-      } else {
-        svg.style.cursor = 'default';
-      }
+      drawEdges(); drawNodes();
+      svg.style.cursor = (hit >= 0 && canFireNode(hit)) ? 'pointer' : 'default';
     }
   });
 
   svg.addEventListener('mouseleave', () => {
-    if(hoveredNode !== -1){
-      hoveredNode = -1;
-      drawEdges();
-      drawNodes();
-    }
+    if(hoveredNode !== -1){ hoveredNode = -1; drawEdges(); drawNodes(); }
     svg.style.cursor = 'default';
   });
 
   svg.addEventListener('click', e => {
-    const {x,y} = svgCoords(e);
-    const hit = hitTestNode(x, y);
-    if(hit < 0) return;
-    const l1 = getL1();
-    const gameOver = l1 < 0.01 || budget <= 0;
-    if(gameOver) return;
-    const deg = outAdj[hit].length;
-    const val = cash[hit];
-    if(deg > 0 && deg <= budget && Math.abs(val) >= .001){
-      fireNode(hit);
-    }
+    // ignore if touch device (handled by touchend)
+    if(isTouch) return;
+    const {x,y} = svgPoint(e.clientX, e.clientY);
+    const hit = hitTestNode(x,y);
+    if(hit >= 0 && canFireNode(hit)) fireNode(hit);
   });
+
+  // ── Touch (mobile) ──
+  svg.addEventListener('touchstart', e => {
+    // prevent scroll & zoom while interacting with the graph
+    e.preventDefault();
+  }, {passive: false});
+
+  svg.addEventListener('touchend', e => {
+    e.preventDefault();
+    const touch = e.changedTouches[0];
+    if(!touch) return;
+    const {x,y} = svgPoint(touch.clientX, touch.clientY);
+    const hit = hitTestNode(x,y);
+    if(hit >= 0 && canFireNode(hit)){
+      // brief highlight
+      hoveredNode = hit;
+      drawEdges(); drawNodes();
+      fireNode(hit);
+      setTimeout(()=>{ hoveredNode = -1; drawEdges(); drawNodes(); }, 200);
+    }
+  }, {passive: false});
 }
 
 // ─── Level buttons ───────────────────────────────────────────────
 function buildLevelBtns(){
-  const cont = document.getElementById('levelBtns');
-  clearEl(cont);
-  LEVELS.forEach((l,i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'level-btn' + (i===levelIdx?' active':'');
-    btn.textContent = l.name;
-    btn.onclick = ()=>{ levelIdx=i; initLevel(); };
-    cont.appendChild(btn);
+  const c = document.getElementById('levelBtns');
+  clearEl(c);
+  LEVELS.forEach((lv,i)=>{
+    const b = document.createElement('button');
+    b.className = 'level-btn' + (i===levelIdx?' active':'');
+    b.textContent = lv.name;
+    b.onclick = ()=>{ levelIdx=i; initLevel(); };
+    c.appendChild(b);
   });
 }
 
-// ─── Init Level ──────────────────────────────────────────────────
+// ─── Init / Reset ────────────────────────────────────────────────
 function initLevel(){
-  const level = lv();
-  cash = level.nodes.map(n => n.cash);
-  budget = level.budget;
-  moves = 0;
+  const lev = L();
+  cash = lev.nodes.map(n=>n.cash);
+  budget = lev.budget; moves = 0;
   history = [{cost:0, l1:getL1()}];
-  outAdj = buildOutAdj(level);
-  hoveredNode = -1;
-  firedNodeId = -1;
-  if(animFrame) cancelAnimationFrame(animFrame);
-  animFrame = null;
+  outAdj = buildOutAdj(lev);
+  hoveredNode = -1; firedNodeId = -1;
+  if(animFrame) cancelAnimationFrame(animFrame); animFrame = null;
   clearEl(document.getElementById('particlesLayer'));
   buildLevelBtns();
   render();
 }
-
 function resetLevel(){ initLevel(); }
 
 // ─── Full render ─────────────────────────────────────────────────
-function render(){
-  drawEdges();
-  drawNodes();
-  renderStats();
-  renderChart();
-  renderBanners();
-}
+function render(){ drawEdges(); drawNodes(); renderStats(); renderChart(); renderBanners(); }
 
 // ─── Draw edges ──────────────────────────────────────────────────
 function drawEdges(){
-  const level = lv();
-  const layer = document.getElementById('edgesLayer');
+  const lev = L(), layer = document.getElementById('edgesLayer');
   clearEl(layer);
-  const baseR = getBaseR();
-  const r = baseR + 2;
-
-  level.edges.forEach(([fi,ti])=>{
-    const a = level.nodes[fi], b = level.nodes[ti];
-    const dx = b.x-a.x, dy = b.y-a.y;
-    const len = Math.hypot(dx,dy);
+  const r = getBaseR() + 2;
+  lev.edges.forEach(([fi,ti])=>{
+    const a=lev.nodes[fi], b=lev.nodes[ti];
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy);
     if(!len) return;
-    const ux=dx/len, uy=dy/len;
-    const hl = hoveredNode === fi;
-    const line = svgEl('line',{
-      x1: a.x+ux*r, y1: a.y+uy*r,
-      x2: b.x-ux*(r+5), y2: b.y-uy*(r+5),
-      stroke: hl ? '#fbbf24' : '#1e293b',
-      'stroke-width': hl ? 2.2 : 1.2,
-      'marker-end': hl ? 'url(#arr-hl)' : 'url(#arr)',
+    const ux=dx/len, uy=dy/len, hl=hoveredNode===fi;
+    const ln = svgEl('line',{
+      x1:a.x+ux*r, y1:a.y+uy*r,
+      x2:b.x-ux*(r+5), y2:b.y-uy*(r+5),
+      stroke:hl?'#fbbf24':'#1e293b', 'stroke-width':hl?2.2:1.2,
+      'marker-end':hl?'url(#arr-hl)':'url(#arr)',
     });
-    line.style.pointerEvents = 'none';
-    layer.appendChild(line);
+    ln.style.pointerEvents='none';
+    layer.appendChild(ln);
   });
 }
 
 // ─── Draw nodes ──────────────────────────────────────────────────
 function drawNodes(){
-  const level = lv();
-  const layer = document.getElementById('nodesLayer');
+  const lev = L(), layer = document.getElementById('nodesLayer');
   clearEl(layer);
-  const baseR = getBaseR();
-  const small = isSmall();
-  const font = "'JetBrains Mono',monospace";
+  const baseR=getBaseR(), sm=small(), font="'JetBrains Mono',monospace";
 
-  level.nodes.forEach(node=>{
-    const val = cash[node.id];
-    const deg = outAdj[node.id].length;
-    const isFired = firedNodeId === node.id;
-    const isHov = hoveredNode === node.id;
-    const gf = isFired ? 'url(#gl-f)' : Math.abs(val)>.5 ? (val>0?'url(#gl-p)':'url(#gl-n)') : 'none';
+  lev.nodes.forEach(node=>{
+    const val=cash[node.id], deg=outAdj[node.id].length;
+    const isFired=firedNodeId===node.id, isHov=hoveredNode===node.id;
+    const gf=isFired?'url(#gl-f)':Math.abs(val)>.5?(val>0?'url(#gl-p)':'url(#gl-n)'):'none';
 
     const g = svgEl('g');
-    g.style.pointerEvents = 'none'; // all interaction via SVG-level handler
+    g.style.pointerEvents='none';
 
-    // outer halo
-    if(Math.abs(val) > .5){
+    if(Math.abs(val)>.5){
       g.appendChild(svgEl('circle',{
-        cx:node.x, cy:node.y, r:baseR+7, fill:'none',
-        stroke: val>0 ? '#f97316' : '#3b82f6', 'stroke-width':1.2,
-        opacity: (.15 + Math.min(Math.abs(val)*.015,.35)).toFixed(3),
+        cx:node.x,cy:node.y,r:baseR+7,fill:'none',
+        stroke:val>0?'#f97316':'#3b82f6','stroke-width':1.2,
+        opacity:(.15+Math.min(Math.abs(val)*.015,.35)).toFixed(3),
       }));
     }
 
-    // main circle
-    const circ = svgEl('circle',{
-      cx:node.x, cy:node.y, r:baseR,
-      fill: cashColor(val), filter: gf, opacity:'0.92',
-      stroke: isHov ? '#fbbf24' : 'transparent', 'stroke-width':2,
+    const circ=svgEl('circle',{
+      cx:node.x,cy:node.y,r:baseR,
+      fill:cashColor(val),filter:gf,opacity:'0.92',
+      stroke:isHov?'#fbbf24':'transparent','stroke-width':2,
     });
-    circ.style.transition = 'fill .25s';
+    circ.style.transition='fill .25s';
     if(isFired){
-      circ.style.transform = 'scale(1.12)';
-      circ.style.transformOrigin = `${node.x}px ${node.y}px`;
+      circ.style.transform='scale(1.12)';
+      circ.style.transformOrigin=`${node.x}px ${node.y}px`;
     }
     g.appendChild(circ);
 
-    // cash text
-    const cashStr = Math.abs(val) < .01 ? '0' : val.toFixed(1);
-    const txt = svgEl('text',{
-      x:node.x, y:node.y-(small?2:3),
-      'text-anchor':'middle', 'dominant-baseline':'central',
-      fill:'#fff', 'font-size':small?10:12, 'font-weight':600,
-      'font-family':font, textContent:cashStr,
-    });
-    g.appendChild(txt);
-
-    // degree label
     g.appendChild(svgEl('text',{
-      x:node.x, y:node.y+(small?10:13),
-      'text-anchor':'middle', fill:'#fbbf24',
-      'font-size':small?7:9, 'font-family':font,
+      x:node.x, y:node.y-(sm?2:3),
+      'text-anchor':'middle','dominant-baseline':'central',
+      fill:'#fff','font-size':sm?10:12,'font-weight':600,
+      'font-family':font, textContent:Math.abs(val)<.01?'0':val.toFixed(1),
+    }));
+
+    g.appendChild(svgEl('text',{
+      x:node.x, y:node.y+(sm?10:13),
+      'text-anchor':'middle',fill:'#fbbf24',
+      'font-size':sm?7:9,'font-family':font,
       opacity:'0.6', textContent:'d\u207A='+deg,
     }));
 
-    // id label
     g.appendChild(svgEl('text',{
       x:node.x, y:node.y-baseR-8,
-      'text-anchor':'middle', fill:'#64748b',
-      'font-size':9, 'font-family':font,
-      textContent:node.id,
+      'text-anchor':'middle',fill:'#64748b',
+      'font-size':9,'font-family':font, textContent:node.id,
     }));
 
     layer.appendChild(g);
@@ -436,165 +434,116 @@ function drawNodes(){
 
 // ─── Fire node ───────────────────────────────────────────────────
 function fireNode(nodeId){
-  const level = lv();
-  const deg = outAdj[nodeId].length;
-  const val = cash[nodeId];
+  const lev=L(), deg=outAdj[nodeId].length, val=cash[nodeId];
+  outAdj[nodeId].forEach(nb=>{ cash[nb]+=val/deg; });
+  cash[nodeId]=0; budget-=deg; moves++;
+  history.push({cost:getCostUsed(),l1:getL1()});
 
-  // distribute cash
-  outAdj[nodeId].forEach(nb=>{ cash[nb] += val / deg; });
-  cash[nodeId] = 0;
-  budget -= deg;
-  moves++;
-  history.push({ cost:getCostUsed(), l1:getL1() });
-
-  // fired flash
-  firedNodeId = nodeId;
+  firedNodeId=nodeId;
   if(firedTimer) clearTimeout(firedTimer);
-  firedTimer = setTimeout(()=>{ firedNodeId = -1; drawNodes(); }, 280);
+  firedTimer=setTimeout(()=>{ firedNodeId=-1; drawNodes(); },280);
 
-  // spawn particles
-  const src = level.nodes[nodeId];
-  const flows = outAdj[nodeId].map(nb=>{
-    const dst = level.nodes[nb];
-    return {
-      sx:src.x, sy:src.y, ex:dst.x, ey:dst.y,
-      color: val > 0 ? '#f97316' : '#3b82f6',
-      st: performance.now(), dur: 380
-    };
+  const src=lev.nodes[nodeId];
+  const flows=outAdj[nodeId].map(nb=>{
+    const dst=lev.nodes[nb];
+    return {sx:src.x,sy:src.y,ex:dst.x,ey:dst.y,color:val>0?'#f97316':'#3b82f6',st:performance.now(),dur:380};
   });
+  const pL=document.getElementById('particlesLayer');
 
-  const pLayer = document.getElementById('particlesLayer');
-
-  function animateParticles(){
-    clearEl(pLayer);
-    const now = performance.now();
-    let alive = 0;
+  function anim(){
+    clearEl(pL);
+    const now=performance.now();
+    let alive=0;
     flows.forEach(p=>{
-      const t = Math.min((now - p.st) / p.dur, 1);
-      if(t < 1){
+      const t=Math.min((now-p.st)/p.dur,1);
+      if(t<1){
         alive++;
-        const e = 1 - Math.pow(1-t, 3);
-        pLayer.appendChild(svgEl('circle',{
-          cx: (p.sx + (p.ex-p.sx)*e).toFixed(1),
-          cy: (p.sy + (p.ey-p.sy)*e).toFixed(1),
-          r: (4.5*(1-t*.4)).toFixed(2),
-          fill: p.color,
-          opacity: (1-t*.7).toFixed(2),
+        const e=1-(1-t)**3;
+        pL.appendChild(svgEl('circle',{
+          cx:(p.sx+(p.ex-p.sx)*e).toFixed(1),
+          cy:(p.sy+(p.ey-p.sy)*e).toFixed(1),
+          r:(4.5*(1-t*.4)).toFixed(2),
+          fill:p.color, opacity:(1-t*.7).toFixed(2),
         }));
       }
     });
-    if(alive > 0) animFrame = requestAnimationFrame(animateParticles);
-    else animFrame = null;
+    if(alive>0) animFrame=requestAnimationFrame(anim); else animFrame=null;
   }
   if(animFrame) cancelAnimationFrame(animFrame);
-  animFrame = requestAnimationFrame(animateParticles);
-
+  animFrame=requestAnimationFrame(anim);
   render();
 }
 
-// ─── Stats panel ─────────────────────────────────────────────────
+// ─── Stats ───────────────────────────────────────────────────────
 function renderStats(){
-  const l1 = getL1();
-  const drained = l1 < 0.01;
-  const costUsed = getCostUsed();
-  const initL1 = getInitialL1();
-  const reduction = initL1 - l1;
-  const eff = costUsed > 0 ? (reduction / costUsed).toFixed(3) : '—';
+  const l1=getL1(), drained=l1<.01, costUsed=getCostUsed(), initL1=getInitialL1();
+  const red=initL1-l1, eff=costUsed>0?(red/costUsed).toFixed(3):'—';
 
-  const elL1 = document.getElementById('statL1');
-  elL1.textContent = l1 < .01 ? '0.00' : l1.toFixed(2);
-  elL1.style.color = drained ? '#22c55e' : '#e2e8f0';
+  const el1=document.getElementById('statL1');
+  el1.textContent=l1<.01?'0.00':l1.toFixed(2);
+  el1.style.color=drained?'#22c55e':'#e2e8f0';
 
-  const elBud = document.getElementById('statBudget');
-  elBud.textContent = budget;
-  elBud.style.color = budget <= 5 && !drained ? '#ef4444' : '#e2e8f0';
+  const elB=document.getElementById('statBudget');
+  elB.textContent=budget;
+  elB.style.color=budget<=5&&!drained?'#ef4444':'#e2e8f0';
 
-  document.getElementById('statCost').textContent = costUsed;
-  document.getElementById('statMoves').textContent = moves;
-  document.getElementById('effInit').textContent = initL1.toFixed(2);
-  document.getElementById('effRed').textContent = reduction.toFixed(2);
-  document.getElementById('effEff').textContent = eff;
+  document.getElementById('statCost').textContent=costUsed;
+  document.getElementById('statMoves').textContent=moves;
+  document.getElementById('effInit').textContent=initL1.toFixed(2);
+  document.getElementById('effRed').textContent=red.toFixed(2);
+  document.getElementById('effEff').textContent=eff;
 }
 
-// ─── L1 vs Cost chart ───────────────────────────────────────────
+// ─── Chart ───────────────────────────────────────────────────────
 function renderChart(){
-  const svg = document.getElementById('chartSvg');
+  const svg=document.getElementById('chartSvg');
   clearEl(svg);
-  const W=274, H=164, pad=34, pR=8, pT=8;
-  const gw = W-pad-pR, gh = H-pT-pad;
-  const maxCost = lv().budget;
-  const maxL1 = getInitialL1();
-  const toX = c => pad + (c/(maxCost||1))*gw;
-  const toY = l => pT + (1 - l/(maxL1||1))*gh;
+  const W=274,H=164,pad=34,pR=8,pT=8;
+  const gw=W-pad-pR, gh=H-pT-pad;
+  const maxC=L().budget, maxL=getInitialL1();
+  const tx=c=>pad+(c/(maxC||1))*gw, ty=l=>pT+(1-l/(maxL||1))*gh;
 
-  // grid
   for(let i=0;i<=4;i++){
-    const f = i/4;
-    svg.appendChild(svgEl('line',{x1:toX(f*maxCost),y1:pT,x2:toX(f*maxCost),y2:pT+gh,stroke:'#1e293b','stroke-width':.5}));
-    svg.appendChild(svgEl('line',{x1:pad,y1:toY(f*maxL1),x2:pad+gw,y2:toY(f*maxL1),stroke:'#1e293b','stroke-width':.5}));
+    const f=i/4;
+    svg.appendChild(svgEl('line',{x1:tx(f*maxC),y1:pT,x2:tx(f*maxC),y2:pT+gh,stroke:'#1e293b','stroke-width':.5}));
+    svg.appendChild(svgEl('line',{x1:pad,y1:ty(f*maxL),x2:pad+gw,y2:ty(f*maxL),stroke:'#1e293b','stroke-width':.5}));
   }
-  // axes
   svg.appendChild(svgEl('line',{x1:pad,y1:pT,x2:pad,y2:pT+gh,stroke:'#334155','stroke-width':1.5}));
   svg.appendChild(svgEl('line',{x1:pad,y1:pT+gh,x2:pad+gw,y2:pT+gh,stroke:'#334155','stroke-width':1.5}));
 
-  // labels
-  [
-    {x:pad+gw/2, y:H-2, a:'middle', t:'cost', s:9},
-    {x:pad, y:H-pad+13, a:'middle', t:'0', s:8},
-    {x:pad+gw, y:H-pad+13, a:'middle', t:String(maxCost), s:8},
-    {x:pad-4, y:pT+gh+3, a:'end', t:'0', s:8},
-    {x:pad-4, y:pT+4, a:'end', t:String(Math.round(maxL1)), s:8},
-  ].forEach(l=>{
-    svg.appendChild(svgEl('text',{x:l.x,y:l.y,'text-anchor':l.a,fill:'#64748b','font-size':l.s,'font-family':'monospace',textContent:l.t}));
-  });
-  // rotated y-label
-  svg.appendChild(svgEl('text',{
-    x:8, y:pT+gh/2, 'text-anchor':'middle', fill:'#64748b',
-    'font-size':9, 'font-family':'monospace',
-    transform:`rotate(-90,8,${pT+gh/2})`, textContent:'‖C‖₁'
-  }));
+  [{x:pad+gw/2,y:H-2,a:'middle',t:'cost',s:9},{x:pad,y:H-pad+13,a:'middle',t:'0',s:8},
+   {x:pad+gw,y:H-pad+13,a:'middle',t:String(maxC),s:8},{x:pad-4,y:pT+gh+3,a:'end',t:'0',s:8},
+   {x:pad-4,y:pT+4,a:'end',t:String(Math.round(maxL)),s:8}
+  ].forEach(l=>svg.appendChild(svgEl('text',{x:l.x,y:l.y,'text-anchor':l.a,fill:'#64748b','font-size':l.s,'font-family':'monospace',textContent:l.t})));
 
-  // line path
-  if(history.length > 1){
-    let d = '';
-    history.forEach((pt,i)=>{ d += (i===0?'M':'L') + toX(pt.cost).toFixed(1) + ',' + toY(pt.l1).toFixed(1); });
-    svg.appendChild(svgEl('path',{d, fill:'none', stroke:'#22c55e', 'stroke-width':2, 'stroke-linejoin':'round'}));
+  svg.appendChild(svgEl('text',{x:8,y:pT+gh/2,'text-anchor':'middle',fill:'#64748b','font-size':9,'font-family':'monospace',
+    transform:`rotate(-90,8,${pT+gh/2})`,textContent:'‖C‖₁'}));
+
+  if(history.length>1){
+    let d='';
+    history.forEach((pt,i)=>{d+=(i===0?'M':'L')+tx(pt.cost).toFixed(1)+','+ty(pt.l1).toFixed(1);});
+    svg.appendChild(svgEl('path',{d,fill:'none',stroke:'#22c55e','stroke-width':2,'stroke-linejoin':'round'}));
   }
-  // dots
   history.forEach((pt,i)=>{
-    const last = i === history.length-1;
-    svg.appendChild(svgEl('circle',{
-      cx:toX(pt.cost), cy:toY(pt.l1),
-      r: last ? 3.5 : 2,
-      fill: last ? '#fbbf24' : '#22c55e',
-      stroke: last ? '#fff' : 'none', 'stroke-width':1.5,
-    }));
+    const last=i===history.length-1;
+    svg.appendChild(svgEl('circle',{cx:tx(pt.cost),cy:ty(pt.l1),r:last?3.5:2,fill:last?'#fbbf24':'#22c55e',stroke:last?'#fff':'none','stroke-width':1.5}));
   });
 }
 
 // ─── Banners ─────────────────────────────────────────────────────
 function renderBanners(){
-  const l1 = getL1(), drained = l1 < .01, budgetEmpty = budget <= 0;
-  const ok = document.getElementById('bannerOk');
-  const fail = document.getElementById('bannerFail');
-  if(drained){
-    ok.textContent = `✓ DRAINED — cost: ${getCostUsed()} / ${lv().budget}`;
-    ok.classList.remove('hidden'); fail.classList.add('hidden');
-  } else if(budgetEmpty){
-    fail.textContent = `✗ BUDGET EXHAUSTED — ‖C‖₁ = ${l1.toFixed(2)}`;
-    fail.classList.remove('hidden'); ok.classList.add('hidden');
-  } else {
-    ok.classList.add('hidden'); fail.classList.add('hidden');
-  }
+  const l1=getL1(), drained=l1<.01, empty=budget<=0;
+  const ok=document.getElementById('bannerOk'), fail=document.getElementById('bannerFail');
+  if(drained){ ok.textContent=`✓ DRAINED — cost: ${getCostUsed()} / ${L().budget}`; ok.classList.remove('hidden'); fail.classList.add('hidden'); }
+  else if(empty){ fail.textContent=`✗ BUDGET EXHAUSTED — ‖C‖₁ = ${l1.toFixed(2)}`; fail.classList.remove('hidden'); ok.classList.add('hidden'); }
+  else { ok.classList.add('hidden'); fail.classList.add('hidden'); }
 }
 
 // ─── Keyboard ────────────────────────────────────────────────────
-document.addEventListener('keydown', e=>{
-  if(e.key==='r'||e.key==='R') resetLevel();
-});
+document.addEventListener('keydown', e=>{ if(e.key==='r'||e.key==='R') resetLevel(); });
 
 // ─── Boot ────────────────────────────────────────────────────────
-setupSvgEvents();
+setupEvents();
 initLevel();
 </script>
 </body>
